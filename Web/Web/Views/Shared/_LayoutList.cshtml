@@ -135,43 +135,43 @@
         {
             <i class=" search_remove"></i><a style="border-color: white; font-size: 21px; padding:2px 5px; " class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">@viewmodel.Title@*<span class="caret"></span>*@</a>
             @*<ul class="dropdown-menu" role="menu">
-                @{
+                    @{
 
-                    var ViewList = ViewBag.ViewList as List<Sys_View>;
-                    var systemViewList = ViewList.Where(e => e.Type == "系统视图").ToList();
-                    int z = 0;
-                    foreach (var item in systemViewList)
-                    {
-                        if (z++ == 0)
+                        var ViewList = ViewBag.ViewList as List<Sys_View>;
+                        var systemViewList = ViewList.Where(e => e.Type == "系统视图").ToList();
+                        int z = 0;
+                        foreach (var item in systemViewList)
                         {
-                            <li><a style="background-color:white !important;color:black;" href="javascript://"><b>系统视图</b></a></li>
-                        }
-                        <li><a href="@Request.Path?v=@item.ID&menuid=@Request.QueryString["menuid"]">@item.Title</a></li>
-                    }
-                    if (systemViewList != null && systemViewList.ToList().Count > 0)
-                    {
-                        <li class="divider"></li>
-                    }
-
-                    var UserID = Convert.ToInt32(ViewBag.UserID);
-                    var customerViewList = ViewList.Where(e => e.Type == "自定义视图" && e.OwnerID == UserID);
-                    if (customerViewList != null && customerViewList.ToList().Count > 0)
-                    {
-                        int i = 0;
-                        foreach (var item in customerViewList)
-                        {
-                            if (i++ == 0)
+                            if (z++ == 0)
                             {
-                                <li><a style="background-color:white !important;color:black;" href="javascript://"><b>自定义视图</b></a></li>
+                                <li><a style="background-color:white !important;color:black;" href="javascript://"><b>系统视图</b></a></li>
                             }
-
                             <li><a href="@Request.Path?v=@item.ID&menuid=@Request.QueryString["menuid"]">@item.Title</a></li>
                         }
-                        <li class="divider"></li>
+                        if (systemViewList != null && systemViewList.ToList().Count > 0)
+                        {
+                            <li class="divider"></li>
+                        }
+
+                        var UserID = Convert.ToInt32(ViewBag.UserID);
+                        var customerViewList = ViewList.Where(e => e.Type == "自定义视图" && e.OwnerID == UserID);
+                        if (customerViewList != null && customerViewList.ToList().Count > 0)
+                        {
+                            int i = 0;
+                            foreach (var item in customerViewList)
+                            {
+                                if (i++ == 0)
+                                {
+                                    <li><a style="background-color:white !important;color:black;" href="javascript://"><b>自定义视图</b></a></li>
+                                }
+
+                                <li><a href="@Request.Path?v=@item.ID&menuid=@Request.QueryString["menuid"]">@item.Title</a></li>
+                            }
+                            <li class="divider"></li>
+                        }
                     }
-                }
-                <li><a href="javascript://" id="" onclick="layoutlist.toview(0, '创建新视图');">创建新视图</a></li>
-            </ul>*@
+                    <li><a href="javascript://" id="" onclick="layoutlist.toview(0, '创建新视图');">创建新视图</a></li>
+                </ul>*@
         }
         else
         {
@@ -200,11 +200,14 @@
                         style: "text-align: center;"
                     },
                     template: function (data) {
-                        var _list = [];
+                        if (data["@(ViewBag.EntityName)$OwnerID"] == "999" &&'@ViewBag.UserID'== "999") { return ""; } else {
+                               var _list = [];
                         $.each(operations, function (m, n) {
                             _list.push('<a id="0" class="' + (n.Style == "" ? "" : n.Style) + '" title="' + n.OperateName + '" onclick="' + n.Fun + '(' + data["@(ViewBag.EntityName)$ID"] + ',\'' + data["@(ViewBag.EntityName)$Name"] + '\',' +@ViewBag.ViewID+',' + data["peta_rn"] + ')">' + n.OperateName + '</a>');
                         });
                         return "<span class='listoperations'>" + _list.join('&nbsp;&nbsp;')+"</span>";
+                        }
+
                     },
                     sortable: false
                 });

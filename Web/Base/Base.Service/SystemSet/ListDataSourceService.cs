@@ -144,6 +144,7 @@ namespace Base.Service.SystemSet
             Sys_Entity entity = db.FirstOrDefault<Sys_Entity>(new Sql("SELECT * FROM Sys_Entity WHERE ID=" + page.eid));
             if (sql.IndexOf(entity.Name + ".ID") == -1) sql = sql.Replace("SELECT", "SELECT " + entity.Name + ".ID AS " + entity.Name + "$ID,");
             if (sql.IndexOf(entity.Name + ".Name") == -1) sql = sql.Replace("SELECT", "SELECT " + entity.Name + ".Name AS " + entity.Name + "$Name,");
+            if (sql.IndexOf(entity.Name + ".OwnerID") == -1) sql = sql.Replace("SELECT", "SELECT " + entity.Name + ".OwnerID AS " + entity.Name + "$OwnerID,");
             //Where条件
             if (!string.IsNullOrEmpty(page.WhereSql))
             {

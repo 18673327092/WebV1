@@ -49,7 +49,7 @@
         }
 
             .form_content input {
-                width: 100%;
+                width: 200px;
                 padding: 0 5px;
             }
 
@@ -59,11 +59,11 @@
             }
             .form_content select {
                 height: 36px;
-                width: 100%;
+                width: 200px;
             }
 
             .form_content .lookupSpan {
-                width: 100%;
+                width: 200px;
                 float: left;
                 padding: 0px 5px;
                 padding-right: 35px;
@@ -211,20 +211,15 @@
                                                                     }
                                                                 </span>
                                                             </td>
-                                                            <td style=" border: 0px;padding: 0px;">
+                                                            <td width="" style=" border: 0px;padding: 0px;">
                                                                 <div class="form_content">
                                                                     @Html.FormControl(new FormControllerModel() { FieldID = field.FieldID, FormField = field, ID = ID, ClassName = "" })
+                                                                    @if (!string.IsNullOrEmpty(field.Remark))
+                                                                    {
+                                                                        <span style="color: gray; padding: 0px 5px; margin-top: 3px; display: inline-block;">@field.Remark</span>
+                                                                    }
                                                                 </div>
-                                                            </td>
-                                                            <td>
-                                                                @if (IsSectionDefined("Action_" + field.FieldName))
-                                                                {
-                                                                    @RenderSection("Action_" + field.FieldName);
-                                                                }
-                                                                @if (!string.IsNullOrEmpty(field.Remark))
-                                                                {
-                                                                    <span style="color: gray; padding: 0px 5px; margin-top: 3px; display: inline-block;"></span>
-                                                                }
+                                                                
                                                             </td>
                                                         }
                                                     }
