@@ -235,6 +235,7 @@ namespace Base.Service.SystemSet
                     }
                     //共享数据
                     sqlStr += " OR ','+" + entityName + ".ShareList+',' LIKE '%," + admin.ID + ",%'";//
+                    sqlStr += " OR " + entityName + ".OwnerID=999";//所有人可见
                     sqlStr += ")";
                 }
             }

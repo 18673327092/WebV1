@@ -33,14 +33,16 @@
 @section operations{
 
     <div class="breadcrumbs" id="breadcrumbs">
-        <span>当前角色：<span style="font-weight:bold">【@ViewBag.RoleName】</span></span>
+        <span>当前角色:<span style="font-weight:bold">【@ViewBag.RoleName】</span></span>
         <span style='color: red; margin-left:10px; '>选择好权限后，请点击 “保存” 按钮</span>
         <ul class="breadcrumb" style="margin-left:10px;">
             <li>
                 <button class="btn btn-primary" style="height: 28px; margin-top: -7px; padding-top: 4px;" onclick="Save()" type="button">
                     保 存
                 </button>
-                @*<a href="javascript://" onclick="Save()" class="btn btn-toolbar"><i class="fa fa-save"></i>保存</a>*@
+                <button class="btn btn-default" style="height: 28px; margin-top: -7px; padding-top: 4px;" onclick="Close()" type="button">
+                    关 闭
+                </button>
             </li>
         </ul><!-- .breadcrumb -->
         <!-- #nav-search -->

@@ -20,10 +20,10 @@ namespace Base.Service
             Sql _sql = new Sql();
             _sql.Select("ViewRight,EditRight,DeleteRight,Sys_entity.ID 'EntityID',RoleID,Sys_entity.ShowName").From("Sys_entity");
             _sql.LeftJoin("Sys_dataconfig").On("Sys_entity.ID=Sys_dataconfig.EntityID AND RoleID="+request.RoleID+"");
-            _sql.Where("Sys_entity.IsSystem!=1 and IsHide!=1");
+            _sql.Where("Sys_entity.IsSystem!=1 and IsHide!=1 AND IsEnableDataAuthorize=1");
             if (!string.IsNullOrEmpty(page.WhereSql))
             {
-                _sql.Where(page.WhereSql);
+                _sql.Where(page.WhereSql); 
             }
             return base.GetPagingList<Sys_DataConfig>(_sql, new Pagination() { PageSize = 999, Page = 1 });
         }

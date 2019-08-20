@@ -190,7 +190,7 @@
                 var operations = JSON.parse($("#operations").val());
                 var columns = JSON.parse($("#gridfields").val());
                 columns.insert(0,{
-                    field: "@(ViewBag.EntityName)$ID", title: "操作", width: parseInt(operations.length * 40)+10 + "px",
+                    field: "@(ViewBag.EntityName)$Action", title: "操作", width: parseInt(operations.length * 40)+10 + "px",
                     headerAttributes: {
                         class: "table-header-cell",
                         style: "text-align: center; font-size: 14px"

@@ -15,7 +15,7 @@ function Seach() {
                     }
                 },
                 schema: {
-                    data: "List",
+                    data: "Data",
                     total: "Total",
                     errors: "Errors",
                 },

@@ -1,3 +1,18 @@
 ﻿@{
-    Layout = "~/Views/Shared/Template/_LayoutList.cshtml";
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
+}
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            fun.setauth = function (id, name) {
+                parent.dlg.openframe({
+                    area: ["880px", "90%"],
+                    title: "设置权限",
+                    content: "/AccessRightSetting/PageConfig?id=" + id + "&RoleName=" + name
+                });
+            }
+
+            columns.getobj("field", "Sys_Role$Action").width = 160;
+        });
+    </script>
 }
