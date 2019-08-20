@@ -1,0 +1,182 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = ViewBag.Title;
+    var viewmodel = ViewBag.ViewModel as CRM.Model.Sys.Sys_View;
+    var PATH = string.IsNullOrEmpty(ViewBag.AreaName) ? "/" + ViewBag.Controller + "/" : "/" + ViewBag.AreaName + "/" + ViewBag.Controller + "/";
+}
+@section css{
+    @Html.Partial("_Layout-list-css")
+    @System.Web.Optimization.Styles.Render("~/report/css")
+    <style type="text/css">
+        .OpenLink {
+            cursor: default !important;
+            text-decoration: none !important;
+        }
+
+        textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+            font-size: 13px !important;
+        }
+
+        .main-content1 {
+            padding: 2px 5px 0px 5px !important;
+        }
+
+        .page-content {
+            background: #fff;
+            margin: 0;
+            padding: 0px 0px 0px 0px !important;
+        }
+    </style>
+    <link href="~/Content/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/bootstrap/css/bootstrap_select.css" rel="stylesheet" />
+    @RenderSection("css", required: false)
+}
+@section breadcrumbs{
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+        </script>
+        <div></div>
+        <ul class="breadcrumb">
+            <li>
+                @{
+                    if (ViewBag.ValidAdd == null || ViewBag.ValidAdd)
+                    {
+                        <a id="btn-tab-toolbar-add" href="javascript://" class="btn  btn-toolbar"><i class="fa fa-plus"></i>新增</a>
+                    }
+                    var AccessOperations = ViewBag.AccessOperations as List<CRM.Model.Sys.Sys_Operation>;
+                    foreach (var item in AccessOperations.Where(e => e.IsTabListShow).ToList())
+                    {
+                        <a data-title="@item.OperateName" style='@(item.Ischeck?"display:none":"") ' id="@item.BtnID" href="javascript://" class="@(item.Ischeck ? "Ischeck" : "") btn btn-toolbar"><i class="@item.Icon"></i><span>@item.OperateName</span></a>
+                    }
+                    <a id="btn-toolbar-refreshdata" href="javascript://" class="btn btn-toolbar"><i class="fa icon-refresh"></i><span>刷新</span></a>
+
+                }
+                @*<a id="btn-toolbar-refreshdata" title="刷新" style=" position: absolute; right: 23px; top: 2px;" href="javascript://" class="btn btn-toolbar"><i class="fa icon-refresh"></i><span></span></a>*@
+                @*<a id="btn-toolbar-external-link" style="position: absolute;right: 0px; top: 2px;" target="_blank" title="在新窗体打开" href="javascript://" class="btn btn-toolbar"><i class="fa icon-align-justify"></i></a>*@
+            </li>
+
+        </ul><!-- .breadcrumb -->
+        <!-- #nav-search -->
+    </div>
+}
+@*<div class="nav-search" id="nav-search" style="top: -40px; right: 22px; ">
+        <div class="form-search">
+            <span class="input-icon">
+                <input type="text" id="KeyWord" placeholder="关键词搜索" style="width: 300px; padding: 2px 22px 0px 10px;" class="nav-search-input" autocomplete="off" />
+                <i id="btnSearch" class="icon-search nav-search-icon" style="cursor:pointer"></i>
+            </span>
+        </div>
+    </div>*@
+@section search_panel{
+    @*<div id="search-panel" class="search-panel">
+            @{
+                List<CRM.Base.Model.CommonModel.SearchField> SearchFieldList = ViewBag.SearchField as List<CRM.Base.Model.CommonModel.SearchField>;
+                foreach (var item in SearchFieldList)
+                {
+                    switch (item.FieldType)
+                    {
+                        case "单行文本":
+                            <input class="search-control SearchField" data-field="@item.Field" data-type="@item.FieldType" placeholder="输入@(item.Title)">
+                            break;
+                        case "两个选项":
+                        case "选项集":
+                        <select data-actions-box="true" title="选择@(item.Title)" data-width="150px" data-sort=@item.Sort id="@item.Field" class="SearchField selectpicker" @(item.ismultiple == 1 ? "multiple" : "") data-field="@item.Field" data-type="@item.FieldType">
+                            @{
+                            foreach (var dic in item.DictionaryList)
+                            {
+                                <option value="@dic.Value">@dic.Name</option>
+                            }
+                            }
+                        </select>
+                            break;
+                        case "日期":
+                        <div style="float:left">
+                            <input data-field="@item.Field" data-type="日期" data-opera=">=" onclick="laydate({ istime: false, format: 'YYYY-MM-DD' }) " placeholder="选择@(item.Title)[起始]" class="SearchField search-control laydate-icon date">
+                            <span style=" float: left; margin-top: 2px; width: 15px;">至</span>
+                            <input data-field="@item.Field" data-type="日期" data-opera="<=" onclick="laydate({ istime: false, format: 'YYYY-MM-DD' }) " placeholder="选择@(item.Title)[结束]" class="SearchField search-control laydate-icon date">
+                        </div>
+                            break;
+                        case "时间":
+                        <div style="float:left">
+                            <input data-field="@item.Field" data-type="时间" data-opera=">=" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'}) " placeholder="选择@(item.Title)[起始]" class="SearchField search-control laydate-icon time">
+                            <span style=" float: left; margin-top: 2px; width: 15px;">至</span>
+                            <input data-field="@item.Field" data-type="时间" data-opera="<=" onclick="laydate({ istime: true, format: 'YYYY-MM-DD hh:mm:ss' }) " placeholder="选择@(item.Title)[结束]" class="SearchField search-control laydate-icon time">
+                        </div>
+                            break;
+                    }
+                }
+            }
+            <button id="btn_FieldSearch" class="search-button btn btn-primary">搜 索</button>
+        </div>
+        <div style="clear:both;"></div>*@
+}
+<input type="hidden" id="issearch" value="false" />
+<input type="hidden" id="Filter" value="" />
+@RenderBody()
+<!--列表要显示的字段-->
+<input type="hidden" id="gridfields" value="@ViewBag.GridFields" />
+<!--列表容器-->
+<div id="grid" style="height:230px"></div>
+@section scripts{
+    <script src="~/Content/plugin/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    @Html.Partial("_Layout-list-js")
+    <script type="text/javascript">
+        $(function () {
+            //新增按钮
+            $("#btn-tab-toolbar-add").click(function () {
+                parent.dlg.openframe({
+                    offset: ['10px'], title: '新增@(ViewBag.Title)',
+                    content: "@(PATH)Form?pname=@ViewBag.PName&pid=@ViewBag.PID&peid=@ViewBag.PEID",
+                    area: ['98%', '96%']
+                })
+            });
+
+            AutoFrame();
+            $(window).resize(function () {
+                AutoFrame();
+            });
+        })
+        function AutoFrame() {
+            var _h = 0;///parseInt($("#search-panel").height());
+            $.each($(".SearchField"), function () {
+                $(this).val("");
+            })
+            $(".search-span").each(function () {
+                $(this).text($(this).data("title"));
+            });
+            $(".search-icon").each(function () {
+                $(this).data("value", "");
+            });
+            $("#grid").height($(window).height() - (44 + _h));
+            layoutlist.search()
+        }
+    </script>
+    @{
+        if (ViewBag.IsCustomList == null || ViewBag.IsCustomList == false)
+        {
+            <script type="text/javascript">
+                layoutlist.init({
+                    title: "@(ViewBag.Title)",
+                    path: "@(PATH)",
+                    controller: "@(ViewBag.Controller)",
+                    ischeckbox: true,
+                    viewId: "@ViewBag.ViewID",
+                    viewtype: "@ViewBag.ViewType",
+                    viewtitle: "@ViewBag.ViewTitle",
+                    eid: "@ViewBag.EntityID",
+                    ename: "@ViewBag.EntityName",
+                    columns: JSON.parse($("#gridfields").val()),
+                    target: { type: parent, area: ['98%', '96%'] },
+                    pid: "@ViewBag.PID",
+                    peid: "@ViewBag.PEID",
+                    dbclick: function () {
+
+                    }
+                });
+            </script>
+        }
+
+    }
+    @RenderSection("scripts", required: false)
+}

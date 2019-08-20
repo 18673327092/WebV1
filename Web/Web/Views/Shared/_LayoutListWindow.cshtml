@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <!-- 基本样式 -->
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-skins.min.css" />
+    @*<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />*@
+
+ 
+    <!--end-->
+    <!---->
+    @*<link href="~/Content/styles.css" rel="stylesheet" />*@
+    <link href="~/Content/base/css/toobar.css" rel="stylesheet" />
+
+    @RenderSection("css", required: false)
+    <script src="~/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+    <script src="~/Content/plugin/assets/js/ace-extra.min.js"></script>
+</head>
+
+<body>
+    <div class="main-container" id="main-container">
+        <div class="main-container-inner">
+            <div class="main-content1">
+                <div class="page-content" style="padding-left: 12px;">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="icon-double-angle-up icon-only bigger-110"></i>
+        </a>
+    </div>
+    <script src="~/Content/plugin/assets/js/bootstrap.min.js"></script>
+    <script src="~/Content/plugin/assets/js/ace-elements.min.js"></script>
+    <script src="~/Content/plugin/assets/js/ace.min.js"></script>
+    <script src="~/Content/plugin/layer/layer.js"></script>
+    <script src="~/Content/base/js/common.js"></script>
+    <script src="~/Content/base/js/dialog.js"></script>
+    <script src="~/Content/base/js/pagegrid.js"></script>
+    @RenderSection("scripts", required: false)
+    <!-- inline scripts related to this page -->
+</body>
+</html>

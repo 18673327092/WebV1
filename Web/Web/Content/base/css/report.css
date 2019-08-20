@@ -1,0 +1,67 @@
+﻿.breadcrumbs {
+    MARGIN-BOTTOM: -4PX;
+    color: black;
+}
+
+.search-panel {
+    /*position: absolute;
+    top: 45px;
+    background-color: white;
+    padding-bottom: 0px;*/
+}
+
+    .search-panel input {
+        border: solid 1px #ccc;
+        padding-left: 5px;
+    }
+
+.search-control {
+    display: block;
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+    vertical-align: middle;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    margin-right: 2px;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.search-button {
+    /*width: 70px;*/
+    margin-left: 5px;
+    z-index: 9999;
+    height: 30px;
+    padding-top: 5px;
+    margin-bottom: 5px;
+}
+
+.search-control span {
+    cursor: pointer;
+    border: solid #ccc 1px;
+    padding-right: 23px;
+    height: 30px;
+    padding-left: 5px;
+}
+
+.search-control, .SearchField {
+    margin-bottom: 5px;
+}
+
+    .SearchField button {
+        border-radius: 0px;
+        margin-bottom: 0px;
+        height: 30px;
+        padding-left: 5px;
+        padding-top: 5px;
+    }
+
+
+/*.btn {
+font-size:13px;
+}*/
+
+.filter-option{
+        margin-top: 1px;
+        font-size:13px;
+}

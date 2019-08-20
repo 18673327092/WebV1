@@ -1,0 +1,123 @@
+﻿@model CRM.Model.Sys.Sys_Report
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css{
+    @Html.Partial("_Layout-list-css")
+    @System.Web.Optimization.Styles.Render("~/report/css")
+    <link href="~/Content/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/bootstrap/css/bootstrap_select.css" rel="stylesheet" />
+    <style>
+        textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+            font-size: 13px !important;
+        }
+
+        .main-content1 {
+            padding: 2px 5px 0px 5px !important;
+        }
+
+        .page-content {
+            background: #fff;
+            margin: 0;
+            padding: 0px 0px 0px 0px !important;
+        }
+    </style>
+
+}
+@section breadcrumbs{
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+        </script>
+        <ul class="breadcrumb" style="float: right; margin-top: 5px;">
+            <li>
+                <a data-title="导出报表" id="btn-export" style="color:black;" href="javascript://" class=" btn btn-link"><i class="fa icon-download-alt"></i><span>导出报表</span></a>
+            </li>
+        </ul>
+    </div>
+}
+@section search_panel{
+    <div id="search-panel" class="search-panel">
+        @{
+            List<CRM.Model.Sys.Model.SearchField> SearchFieldList = ViewBag.SearchField as List<CRM.Model.Sys.Model.SearchField>;
+            foreach (var item in SearchFieldList.OrderBy(e => e.Sort).ToList())
+            {
+
+
+                switch (item.FieldType)
+                {
+                    case "1":
+                        <div style="float: left; margin-right: 2px;">
+                            <input class="search-control SearchField" data-field="@item.Field" data-type="@item.FieldType" data-sort=@item.Sort placeholder="@(item.Name)" data-defaultvalue="@item.DefaultValue">
+                        </div>
+                        break;
+                    case "2":
+                    <div style="float: left; margin-right: 2px;">
+                        @if (!string.IsNullOrEmpty(item.Title))
+                        {
+                            <span>@item.Title</span>
+                        }
+
+                        <select data-actions-box="true" title="选择@(item.Name)" data-width="@(item.SearchControlWidth)px" data-sort=@item.Sort id="@item.Field" class="SearchField selectpicker" @(item.IsMultiple.HasValue && item.IsMultiple.Value ? "multiple" : "") data-field="@item.Field" data-type="@item.FieldType" data-defaultvalue="@item.DefaultValue">
+                            @{
+                        foreach (var dic in item.DictionaryList)
+                        {
+                            <option value="@dic.Value">@dic.Name</option>
+                        }
+                            }
+                        </select>
+                    </div>
+                        break;
+                    case "3":
+                    <div style="float: left; margin-right: 2px;">
+                        <span class="search-span" id="span_@(item.ID)0" data-fieldid="@item.ID" data-id="0" data-value="" onclick="open_field_dialog(this)" style="float:left;" data-title="选择@(item.Name)">选择@(item.Name)</span>
+                        <input data-id="@(item.ID)" id="input_@(item.ID)0" class="SearchField" data-sort=@item.Sort type="hidden" data-field="@item.Field" data-type="@item.FieldType" data-defaultvalue="@item.DefaultValue">
+                        <i id="icon_@(item.ID)0" class="search-icon icon-search nav-search-icon" data-fieldid="@item.ID" data-id="0" data-value="" onclick="open_field_dialog(this)" style="float: left; margin-top: 9px; margin-left: -20px; "></i>
+                    </div>
+                        break;
+                    case "4":
+                    <div style="float: left; margin-right: 2px;">
+                        <input class="search-control SearchField" data-field="@item.Field" data-type="@item.FieldType" data-sort=@item.Sort placeholder="@(item.Name)" data-defaultvalue="@item.DefaultValue">
+                    </div>
+                        break;
+                    case "5":
+                    <div style="float: left; margin-right: 2px;">
+                        @if (!string.IsNullOrEmpty(item.Title))
+                        {
+                            <div style="float: left; margin-top: 4px;">@item.Title&nbsp;</div>
+                        }
+                        <input data-field="@item.Field" data-type="@item.FieldType" data-sort=@item.Sort data-opera=">=" onclick="laydate({ istime: false, format: 'YYYY-MM-DD' }) " placeholder="@(item.Name)" data-defaultvalue="@item.DefaultValue" class="SearchField search-control laydate-icon date">
+                    </div>
+                        break;
+                    case "6":
+                    <div style="float: left; margin-right: 2px;">
+                        <input data-field="@item.Field" data-type="@item.FieldType" data-sort=@item.Sort data-opera=">=" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'}) " placeholder="@(item.Name)" data-defaultvalue="@item.DefaultValue" class="SearchField search-control laydate-icon time">
+                    </div>
+                        break;
+                }
+
+            }
+        }
+        <button id="btn-search" class="search-button btn btn-primary">查 找</button>
+        <div style="clear:both;"></div>
+    </div>
+    <div style="clear:both;"></div>
+}
+@section viewlist{
+    <div class="btn-group" style="margin-top: 11px; margin-left: 5px; margin-bottom: 3px; ">
+        <div id="viewtitle" style="border-color: white; font-size: 21px; margin-bottom: 3px; margin-top: 0px;">@(Model.Name) <span style="font-size:13px;">@Model.Remark</span></div>
+
+    </div>
+}
+@*列表要显示的字段*@
+<input type="hidden" id="gridfields" value="@ViewBag.GridFields" />
+<input type="hidden" id="ID" value="@Model.ID" />
+<input type="hidden" id="issearch" value="false" />
+<input type="hidden" id="Filter" />
+<iframe id="ifile" style="display: none"></iframe>
+@*列表容器*@
+<div id="grid"></div>
+@section scripts{
+    @System.Web.Optimization.Scripts.Render("~/report/js")
+    <script src="~/Content/plugin/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+}

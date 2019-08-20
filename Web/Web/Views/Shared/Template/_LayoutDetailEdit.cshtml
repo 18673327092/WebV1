@@ -1,0 +1,131 @@
+﻿@using CRM.Utility.ResultModel
+@using CRM.Model.Base
+@{
+    Layout = "~/Views/Shared/_LayoutWindow.cshtml";
+    string SaveAction = ViewBag.SaveAction;
+    string Controller = ViewBag.Controller;
+    var PATH = ViewBag.PATH;
+    int EntityID = ViewBag.EntityID;
+    string EntityName = ViewBag.EntityName.ToString();
+    int ID = ViewBag.ID;
+    //数据权限配置信息
+    Dictionary<string, string> PageData = new Dictionary<string, string>();
+    if (ViewBag.PageData != null)
+    {
+        PageData = ViewBag.PageData as Dictionary<string, string>;
+    }
+}
+@section css{
+    @System.Web.Optimization.Styles.Render("~/form/css")
+    @RenderSection("css", required: false)
+
+}
+
+
+<div class="row" id="Form_Head" style="z-index: 999; width: 100%; background-color: white; position: fixed; top: 0px; padding-top: 0px; ">
+    <ul style=" float: left; padding-left: 10px; " class="">
+        <li style="font-size: 20px; margin-top: 6px; ">
+            @{
+                if (PageData.ContainsKey("Name"))
+                {
+                    <span>@PageData["Name"]</span>
+                }
+            }
+        </li>
+        <li style="clear:both;"></li>
+    </ul>
+    <ul style="float: right; margin-right: 10px; margin-top: 3px; margin-bottom: -9px;">
+        <li id="btn-form-detailedit-save" class="btn btn-toolbar" style="color: #2E2E2E;"><i class="fa fa-save"></i>保存</li>
+        <li id="btn-form-detailedit-cancel" class="btn btn-toolbar" style="color: #2E2E2E;"><i class="fa icon-reply"></i>取消</li>
+        @RenderSection("buttons", false)
+    </ul>
+    <div style="clear:both;"></div>
+    <div class="hr" style="margin-top: 7px; margin-bottom: 0px;"></div>
+</div>
+
+<div style=" margin-top: 38px;">
+    @Html.Hidden("Layout_ID", ID)
+    @Html.Hidden("Layout_CreateTime", PageData["CreateTime"])
+    @Html.Hidden("Layout_CreateUserID", PageData["CreateUserID"])
+    @Html.Hidden("Layout_OwnerID", PageData["OwnerID"])
+    @Html.Hidden("Layout_DepartmentID", PageData["DepartmentID"])
+    @Html.Hidden("Layout_UpdateTime", PageData["UpdateTime"])
+    @Html.Hidden("Layout_UpdateUserID", PageData["UpdateUserID"])
+    @Html.Hidden("Layout_StateCode", PageData["StateCode"])
+    @Html.Hidden("Layout_ShareList", PageData.ContainsKey("ShareList") ? PageData["ShareList"] : "")
+    @using (Html.BeginForm(SaveAction, Controller, FormMethod.Post, new { id = "form-submit", enctype = "multipart/form-data" }))
+    {
+
+        //表单隐藏字段
+        var FormHideFields = ViewBag.FormHideFields as ListResult<CRM.Model.Sys.Sys_Field>;
+        foreach (var item in FormHideFields.List)
+        {
+            @Html.FormHiddenControl(item.ID, ID, EntityName)
+        }
+        <div class="row">
+            @{
+        //表单显示字段
+        var FormShowFields = ViewBag.FormShowFields as ListResult<CRM.Model.Sys.Sys_Field>;
+        for (int z = 1; z <= FormShowFields.List.Max(e => e.Sort); z++)
+        {
+            var item = FormShowFields.List.SingleOrDefault(e => e.Sort == z);
+            if (item != null)
+            {
+                <div id="panel-@(item.Name)" class="col-md-4 col-xs-6" style="">
+                    <div class="col-md-5 col-xs-4 filedtitle">
+                        <div class="label-wrapper">
+                            <label style="clear: both;" class="control-label " for="@item.Field" title="">@item.Title</label>
+                            @{
+                if (item.IsMust.HasValue && item.IsMust.Value)
+                {
+                    <span style="color:red">*</span>
+                }
+
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-xs-8 filedvalue" data-sort="@z" name="filed_@z">
+                        @if (item.IsCustomControl.HasValue && item.IsCustomControl.Value)
+                        {
+                            //其他自定义字段
+                            <span id='@item.ID' data-name='@item.Name ' data-value='@(PageData.ContainsKey(item.Name)?PageData[item.Name]:"")'>
+                                @RenderSection(item.Name, false)
+                            </span>
+                        }
+                        else
+                        {
+
+                            @Html.FormControl(item.ID, ID, EntityName)
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div id="panel@(z)" class="col-md-4 col-xs-0" style="margin-bottom: 2px; height: 35px;"></div>
+            }
+        }
+        @RenderSection("formfields", false)
+            }
+        </div>
+    }
+</div>
+@RenderSection("tablist", false)
+@RenderBody()
+@section scripts{
+    <script src="~/Content/plugin/jquery.validate/jquery.validate.min.js"></script>
+    <script src="~/Content/plugin/layui/build/layui.js"></script>
+<script src="~/Content/plugin/page/js/formextend.js"></script>
+    @System.Web.Optimization.Scripts.Render("~/_layoutform/js")
+    <script type="text/javascript">
+        layoutform.path = '@(PATH)'
+        layoutform.controller = '@(ViewBag.Controller)'
+        layoutform.area = '@(ViewBag.AreaName)'
+        layoutform.ID = '@(ID)'
+        layoutform.isedit = '@(ID>0)'
+        layoutform.dialog.height = 380;
+        layoutform.returnurl = location.href.replace("DetailEdit", "Detail")
+        layoutform.init();
+    </script>
+    @RenderSection("scripts", required: false)
+}

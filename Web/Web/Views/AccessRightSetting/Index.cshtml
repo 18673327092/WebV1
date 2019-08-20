@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "权限配置";
+    ViewBag.SysTitle = "权限配置";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css{
+    <link href="~/Content/plugin/kendo/styles/kendo.common.min.css" rel="stylesheet">
+    <link href="~/Content/plugin/kendo/styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="~/Content/plugin/kendo/styles/kendo.default.min.css" rel="stylesheet">
+    <link href="~/Content/plugin/kendo/styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="~/Content/layui/build/css/layui.css" rel="stylesheet" />
+    <style>
+        .layui-tab-content {
+            padding: 10px 0px 0px 0px;
+        }
+        .main-content1 {
+            padding: 2px 5px 0px 5px !important;
+        }
+
+        .page-content {
+            background: #fff;
+            margin: 0;
+            padding: 0px 0px 0px 0px !important;
+        }
+    </style>
+}
+
+<input type="hidden" id="hid_FirstRoleID" value="@ViewBag.FirstRoleID" />
+<input type="hidden" id="hid_Treelist" value="@ViewBag.RoleTreelist" />
+<div class="col-xs-3 col-md-2" style=" padding-left: 0px;   padding-right: 0px;">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                角色列表
+            </div>
+            <div class="panel-body" id="treebody" style="padding:0px">
+                <div id="panel-left-tree" style="height: 500px; overflow-y: auto; overflow-x: hidden">
+                    <ul id="tree" class="ztree" style="overflow:auto;"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xs-9 col-md-10" style="padding-right: 0px;">
+    <div class="layui-tab " style="margin:0px;">
+        <ul class="layui-tab-title">
+            <li id="baseinfo" class="layui-this">操作权限配置</li>
+            <li id="allfiled">数据权限配置</li>
+        </ul>
+        <div class="layui-tab-content" style="padding: 0px 0px 0px 0px;">
+            <div class="layui-tab-item layui-show">
+                <div class="row">
+                    <div id="PageConfig" style="margin-left: 8px; width: 99%;">
+                        <iframe id="PageConfigFrame" src="" frameborder="0" style="width: 100%; height: 100%"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div id="DataConfig" style="margin-left: -4px; width:100%;">
+                    <iframe id="DataConfigFrame" src="" frameborder="0" style="width: 100%; height: 100%"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/Content/base/js/pagegrid.js"></script>
+    <script src="~/Content/plugin/Validform_v5.3.2.js"></script>
+    <script src="~/Content/plugin/layui/build/layui.js"></script>
+    @*左侧树形列表*@
+    @Html.Partial("_RoleList")
+    <script type="text/javascript">
+        var currid = 0;
+        var currname = "";
+        $(window).resize(function () {
+            AutoHeight();
+        });
+        $(function () {
+            AutoHeight();
+            $("#baseinfo").click(function () {
+                $("#PageConfigFrame").attr("src", "/AccessRightSetting/PageConfig?id=" + currid + "&RoleName=" + currname)
+            });
+        })
+        function AutoHeight() {
+            $("#panel-left-tree").height($(window).height() - 88);
+            $("#PageConfig,#DataConfig").height($(window).height() - 79);
+        }
+
+
+    </script>
+
+    <script>
+        layui.use('element', function () {
+            var $ = layui.jquery
+            , element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+            //触发事件
+            var active = {
+                tabChange: function () {
+                    //切换到指定Tab项
+                    element.tabChange('demo', 1); //切换到第2项（注意序号是从0开始计算）
+                }
+            };
+        });
+
+      
+
+    </script>
+}

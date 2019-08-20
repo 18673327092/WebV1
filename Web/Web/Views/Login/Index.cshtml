@@ -1,0 +1,166 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0035)http://www.wumii.com/site/index.htm -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@(CRM.Utility.ApplicationContext.AppSetting.WEB_SITE_NAME)</title>
+    <link rel="Shortcut Icon" href=/logo.ico>
+    <!-- Bootstrap CSS -->
+    <link href="~/Content/plugin/login2/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- bootstrap theme -->
+    <link href="~/Content/plugin/login2/css/bootstrap-theme.css" rel="stylesheet" />
+    <!--external css-->
+    <!-- font icon -->
+    <link href="~/Content/plugin/login2/css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="~/Content/plugin/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="~/Content/plugin/login2/css/style.css" rel="stylesheet" />
+    <link href="~/Content/plugin/login2/css/style-responsive.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="~/Content/plugin/login/css/cloud.css" rel="stylesheet" />
+    <style>
+        .cloud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url(/Content/plugin/login/images/cloud.png) no-repeat;
+            z-index: 1;
+        }
+
+        #cloud2 {
+            z-index: 2;
+        }
+
+        .loginbody {
+            background: url(/Content/plugin/login/images/loginbg3.png) no-repeat center center;
+            width: 100%;
+            height: 585px;
+            overflow: hidden;
+            position: absolute;
+            top: 47px;
+        }
+
+        .logintop {
+            height: 47px;
+            position: absolute;
+            top: 0;
+            background: url(/Content/plugin/login/images/loginbg1.png) repeat-x;
+            z-index: 100;
+            width: 100%;
+            font-size:12px;
+        }
+
+            .logintop span {
+                color: #fff;
+                line-height: 47px;
+                background: url(/Content/plugin/login/images/loginsj.png) no-repeat 21px 18px;
+                text-indent: 44px;
+                color: #afc5d2;
+                float: left;
+            }
+
+            .logintop ul {
+                float: right;
+                padding-right: 30px;
+            }
+
+                .logintop ul li {
+                    float: left;
+                    margin-left: 20px;
+                    line-height: 47px;
+                }
+
+                    .logintop ul li a {
+                        color: #afc5d2;
+                    }
+
+                        .logintop ul li a:hover {
+                            color: #fff;
+                        }
+
+        .loginbm {
+            height: 27px;
+            line-height: 27px;
+            text-align: center;
+            background: url(/Content/plugin/login/images/loginbg2.png) repeat-x;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            color: black;
+            font-size: 12px;
+            color: black;
+            background-color: #ccc;
+        }
+
+            .loginbm a {
+                font-weight: bold;
+                color: #0b3a58;
+            }
+
+                .loginbm a:hover {
+                    color: #fff;
+                }
+
+        .systemlogo {
+            /**/
+            width: 100%;
+            height: 83px;
+            margin-top: 40px;
+            position: absolute;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="login-img3-body" style="background-color: #1c77ac; background-image: url(/Content/plugin/login2/img/bg.jpg); background-repeat: no-repeat; background-position: center top; overflow: hidden; ">
+    <div id="mainBody">
+        <div id="cloud1" class="cloud"></div>
+        <div id="cloud2" class="cloud"></div>
+    </div>
+    <div class="logintop">
+        <span>欢迎登录巴掌软件项目管理系统</span>
+    </div>
+    <div class=" loginbody" style="z-index:99999">
+        <div class="systemlogo">
+            <div>
+                    <img style="width: 214px;" src="/Content/plugin/login2/img/logo.png" />
+                    <span style="font-size: 33px; text-align: center; position: relative; top: 12px; font-family: '方正姚体'; color: #424040; ">项目管理系统</span>
+                </div>
+        </div>
+        <form class="login-form" id="login" method="post" action="/Login/_Login">
+            <div class="login-wrap">
+                <p class="login-img"><i class="icon_lock_alt" style="  color: #34aadc;"></i></p>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_profile"></i></span>
+                    <input type="text" class="form-control" id="LoginAccount" name="LoginAccount" maxlength="150" datatype="*" placeholder="请输入登录帐号" nullmsg="请输入登录帐号" autofocus>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                    <input type="text"  id="LoginPassword" name="LoginPassword" class="form-control" maxlength="80" datatype="*" placeholder="请输入密码" nullmsg="请输入密码">
+                </div>
+                <div class="input-group">
+                    <input type="text" id="codetext" style="width: 157px;float:left" name="codetext" class="form-control" maxlength="80" datatype="*" placeholder="请输入验证码" nullmsg="请输入验证码">
+                    <img alt="" onclick="code_changing()" id="ValidCode" src="/Login/ValidCode?aid=0925" style="vertical-align: middle; margin-left: 10px; margin-right: 10px; "><a class='highlight' style=" margin-right: 10px;" onclick="code_changing()" href="javascript:void(0);">换一张</a>
+                </div>
+                <label class="checkbox">
+                    <input id="isremeber" type="checkbox" value=""><span class="highlight">记住我</span> 
+                    <span class="pull-right"></span>
+                </label>
+                <input id="btn_submit" type="submit" style="    background-color: #227db1; color: white;" class="btn btn-lg btn-block" value="登录" />
+                @*<button id="btn_submit" class="btn btn-primary btn-lg btn-block" type="submit">登录</button>*@
+            </div>
+        </form>
+    </div>
+    <div class="loginbm" >版权所有© 2017-@(DateTime.Now.Year) 上海巴掌网络科技有限公司</div>
+</body>
+</html>
+<script src="~/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+<script src="~/Content/plugin/layer/layer.js"></script>
+@*<script src="~/Content/plugin/login/js/cloud.js"></script>*@
+@System.Web.Optimization.Scripts.Render("~/login/js")

@@ -1,0 +1,246 @@
+﻿@{
+    Layout = "~/Views/Shared/Template/_LayoutForm.cshtml";
+    Dictionary<string, string> PageData = new Dictionary<string, string>();
+    if (ViewBag.PageData != null)
+    {
+        PageData = ViewBag.PageData as Dictionary<string, string>;
+    }
+}
+@section Attachment{
+    <input name="file_Attachment" id="file_Attachment" type="file" class="file-loading" data-value="@(PageData.ContainsKey("Attachment")?PageData["Attachment"]:"")">
+}
+@section css{
+    <link href="~/Content/plugin/uploadify/uploadify.css" rel="stylesheet" />
+    <style type="text/css">
+        .hidden-xs {
+            display: inline !important;
+        }
+
+        .modal-dialog {
+            display: none;
+        }
+
+        .kv-file-upload, .kv-upload-progress, .file-footer-buttons {
+            display: none;
+        }
+        #file_AttachmentUploader {
+            margin-left: 5px;
+        }
+    </style>
+    @*<link href="~/Content/plugin/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />*@
+    @*<link href="~/Content/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet" />*@
+    @*<link href="~/Content/plugin/bootstrap-fileinput/prod/all-krajee.css" rel="stylesheet" />*@
+}
+@section scripts{
+
+    @*<script src="~/Content/plugin/jQuery/jquery-2.2.3.min.js"></script>*@
+    <script src="~/Content/plugin/jQuery/jquery.cookie.js"></script>
+    @*<script src="~/Content/plugin/bootstrap/js/bootstrap.min.js"></script>
+        <script src="~/Content/plugin/bootstrap-fileinput/js/fileinput.js"></script>
+        <script src="~/Content/plugin/bootstrap-fileinput/js/fileinput_locale_zh.js"></script>*@
+    <script src="~/Content/plugin/uploadify/jquery.uploadify.v2.1.4.js"></script>
+    <script src="~/Content/plugin/uploadify/swfobject.js"></script>
+
+    <script type="text/javascript">
+        layoutform.fn_beforeSend = function () {
+           
+        }
+        var _options = {
+            uploader: "/Content/plugin/uploadify/uploadify.swf",
+            script: "/Attachment/AjaxAttachmentUpload",
+            cancelImg: "/Content/plugin/uploadify/cancel.png",
+            buttonImg: "/Content/plugin/uploadify/select.png",
+            folder: "/UploadFile/",
+            auto: false,
+            //multi: true,
+            width: 140,
+            //height: 150,
+            //fileExt: '*.jpg;*.gif;*.png;',
+            //fileDesc: '图片文件(.JPG,.GIF,.PNG)',
+            //queueSizeLimit: 10,
+            sizeLimit: 1024 * 125 * 1024, // 200 kB = 200 * 1024 bytes
+            // 多个参数用逗号隔开 'name':$('#name').val(),'num':$('#num').val(),'ttl':$('#ttl').val()
+            onSelectOnce: function (event, data) {
+                //  $(fileobj).uploadifySettings('scriptData', { 'whs': whs, "isshuiyin": 1 });
+
+                // $(fileobj).uploadifySettings('scriptData', { 'whs': whs });
+
+                $("#file_Attachment").uploadifyUpload();
+
+                //    $(fileobj).uploadifyClearQueue()
+                //   alert("请输入缩略图尺寸");
+
+            },
+            onError: function (event, queueId, fileObj, errorObj)	//错误提示
+            {
+               
+            },
+            onAllComplete: function (e, data) {
+
+            },
+            onComplete: function (event, queueID, fileObj, response, data) {
+             //   debugger
+             //   $("#Attachment").val();
+            },
+            //onOpen: function () {
+            //    alert("");
+            //},
+            'onUploadError': function (file, errorCode, errorMsg, errorString) {
+                alert('The file ' + file.name + ' could not be uploaded: ' + errorString);
+            }
+        }
+        $("#file_Attachment").uploadify(_options);
+    </script>
+    @*<script type="text/javascript">
+            $(document).on('ready', function () {
+                //$("#file_Attachment").fileinput({
+                //    rtl: true,
+                //    showUpload: false,
+                //    showRemove: false,
+                //    language: 'zh',
+                //    allowedFileExtensions: ["jpg", "png", "gif", "zip", "docx", "pdf"],
+                //    maxFileSize: 6000,
+                //});
+
+                var projectfileoptions = {
+                    //uploadUrl: "/file-upload-batch/2",
+                    showUpload: false,
+                    showRemove: false,
+                    showCaption: false,
+                    dropZoneEnabled: false,
+                    language: 'zh',
+                    allowedPreviewTypes: ['image'],
+                    allowedFileExtensions: ["jpg", "png", "gif", "zip", "docx", "pdf", "xlsx", "xls"],
+                    maxFileSize: 9000,
+                    //allowedPreviewTypes: null,
+                    //previewFileIcon: '<i class="fa fa-file"></i>',
+                    //initialPreview: [],
+                    //initialPreviewConfig: [],
+                    //previewFileIconSettings: {
+                    //    'docx': '<i class="fa fa-file-word-o text-primary"></i>',
+                    //    'xlsx': '<i class="fa fa-file-excel-o text-success"></i>',
+                    //    'pptx': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+                    //    'jpg': '<i class="fa fa-file-photo-o text-warning"></i>',
+                    //    'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
+                    //    'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
+                    //    'doc': '<i class="fa fa-file-word-o text-primary"></i>',
+                    //    'xls': '<i class="fa fa-file-excel-o text-success"></i>',
+                    //    'ppt': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+                    //    'jpg': '<i class="fa fa-file-photo-o text-warning"></i>',
+                    //    'png': '<i class="fa fa-file-photo-o text-warning"></i>',
+                    //    'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
+                    //    'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
+                    //    'htm': '<i class="fa fa-file-code-o text-info"></i>',
+                    //    'txt': '<i class="fa fa-file-text-o text-info"></i>',
+                    //    'mov': '<i class="fa fa-file-movie-o text-warning"></i>',
+                    //    'mp3': '<i class="fa fa-file-audio-o text-warning"></i>',
+                    //}
+                };
+           //     $("#file_Attachment").fileinput(projectfileoptions);
+                var ID = $('#ID').val();
+                var Attachment = $('#Attachment').val();
+                if (Attachment) {
+                    if (Attachment.indexOf("jpg") != -1 || Attachment.indexOf("png") != -1 || Attachment.indexOf("gif") != -1) {
+                        //projectfileoptions.initialPreview.push('<i class="fa fa-file-photo-o text-warning"></i>');
+                        projectfileoptions.initialPreview.push(Attachment);
+                    }
+                    if (Attachment.indexOf("pdf") != -1) {
+                        projectfileoptions.initialPreview.push(Attachment);
+                        projectfileoptions.initialPreview.push({ type: "pdf" });
+                    }
+                    if (Attachment.indexOf("xlsx") != -1) {
+                        projectfileoptions.initialPreview.push(Attachment);
+                        projectfileoptions.initialPreviewConfig.push({ type: "xlsx" });
+                    }
+                    var op = $.extend({
+                        overwriteInitial: false,
+                        initialPreviewAsData: true, // defaults markup
+                        uploadExtraData: {
+                            img_key: "1000",
+                            img_keywords: "happy, nature",
+                        }
+                    }, projectfileoptions);
+
+                    $("#file_Attachment").fileinput(op);
+                } else {
+                    $("#file_Attachment").fileinput(projectfileoptions);
+                }
+                //// 文件上传框
+                //$('#file_Attachment').each(function () {
+                //    var ContractFile = $(this).data("value");
+                //    if (ContractFile) {
+                //        $.each(ContractFile, function (m, n) {
+                //            var _url = n.Url;
+                //            if (_url.indexOf("jpg") != -1 || _url.indexOf("png") != -1 || _url.indexOf("gif") != -1) {
+                //                projectfileoptions.initialPreview.push(_url);
+                //                projectfileoptions.initialPreviewConfig.push({ url: "/Contract/DeletecContractFile", key: n.Id });
+                //            }
+                //            if (_url.indexOf("pdf") != -1) {
+                //                projectfileoptions.initialPreview.push(_url);
+                //                projectfileoptions.initialPreviewConfig.push({ type: "pdf", url: "/Contract/DeletecContractFile", key: n.Id });
+                //            }
+                //        });
+                //        var op = $.extend({
+                //            overwriteInitial: false,
+                //            initialPreviewAsData: true, // defaults markup
+                //            uploadExtraData: {
+                //                img_key: "1000",
+                //                img_keywords: "happy, nature",
+                //            }
+                //        }, projectfileoptions);
+
+                //        $(this).fileinput(op);
+                //    } else {
+                //        $(this).fileinput(projectfileoptions);
+                //    }
+                //});
+            });
+
+
+        </script>*@
+    @*<script type="text/javascript">
+        data-show-preview="false"
+            projectfileoptions = {
+                uploadUrl: "/file-upload-batch/2",
+                showUpload: false,
+                showRemove: false,
+                showCaption: false,
+                dropZoneEnabled: false,
+                language: 'zh',
+                allowedPreviewTypes: ['image'],
+                allowedFileExtensions: ['jpg', 'png', 'gif', "pdf"],
+                maxFileSize: 9000,
+                initialPreview: [],
+                initialPreviewConfig: []
+            };
+            // 文件上传框
+            $('input[class=projectfile]').each(function () {
+                var ContractFile = $(this).data("value");
+                if (ContractFile) {
+                    $.each(ContractFile, function (m, n) {
+                        var _url = n.Url;
+                        if (_url.indexOf("jpg") != -1 || _url.indexOf("png") != -1 || _url.indexOf("gif") != -1) {
+                            projectfileoptions.initialPreview.push(_url);
+                            projectfileoptions.initialPreviewConfig.push({ url: "/Contract/DeletecContractFile", key: n.Id });
+                        }
+                        if (_url.indexOf("pdf") != -1) {
+                            projectfileoptions.initialPreview.push(_url);
+                            projectfileoptions.initialPreviewConfig.push({ type: "pdf", url: "/Contract/DeletecContractFile", key: n.Id });
+                        }
+                    });
+                    var op = $.extend({
+                        overwriteInitial: false,
+                        initialPreviewAsData: true, // defaults markup
+                        uploadExtraData: {
+                            img_key: "1000",
+                            img_keywords: "happy, nature",
+                        }
+                    }, projectfileoptions);
+
+                    $(this).fileinput(op);
+                } else {
+                    $(this).fileinput(projectfileoptions);
+                }
+            });
+        </script>*@
+}

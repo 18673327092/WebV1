@@ -1,0 +1,158 @@
+﻿ .col-md-12 {
+            margin-bottom: 1px;
+        }
+
+.filedtitle {
+    /*width: 25%;*/
+    height: 35px;
+    line-height: 35px;
+    background-color: rgb(215, 235, 249);
+    margin-bottom: 2px;
+    overflow: hidden;
+    padding-left: 12px;
+    /*border: solid 1px #90BADD !important;
+            border-right: 0px !important;*/
+}
+
+.filedvalue {
+    padding: 0px;
+}
+
+
+
+.form-group select {
+    height: 25px !important;
+    line-height: 25px !important;
+}
+
+.form-control {
+    border-radius: 0px !important;
+    display: block !important;
+    width: 100% !important;
+    font-size: 13px !important;
+    height: 35px;
+    line-height: 2.2 !important;
+    line-height: 25px;
+    padding: 4px 5px !important;
+    margin: 0px !important;
+    /*border: solid 1px #90BADD !important;*/
+}
+
+label {
+    font-size: 13px;
+}
+
+select.form-control {
+    padding: 4px 6px;
+    height: 35px;
+}
+
+.breadcrumbs {
+    position: fixed;
+    border-top: 1px solid #D5D5D5;
+    background-color: #F1F1F1;
+    width: 100%;
+    z-index: 999;
+    padding: 0px;
+}
+
+.icon-search {
+    cursor: pointer;
+    position: absolute;
+    top: 11px;
+    right: 5px;
+}
+
+ul {
+    margin: 0px;
+}
+
+li {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.sys-li {
+    float: right;
+    padding: 4px 6px;
+    margin-left: 2px;
+    margin-bottom: 5px;
+    border-left: 1px solid #ccc;
+}
+
+    .sys-li > span {
+        font-size: 14px;
+        margin-left: 5px;
+    }
+
+.btn-file > .fileinput-new, .btn-file > .fileinput-exists {
+    background-color: #D7EBF9;
+    padding: 4px 8px;
+}
+
+.icon-lock {
+    color: #8C8686;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    cursor: default !important;
+    background-color: #FBFBFB;
+}
+
+.fieldfocus {
+    border: solid 1px red;
+}
+
+/*自定义控件样式*/
+.customer_field {
+    border-radius: 0px !important;
+    display: block !important;
+    font-size: 13px !important;
+    height: 35px;
+    line-height: 2.2 !important;
+    line-height: 25px;
+    padding: 4px 5px !important;
+    margin: 0px !important;
+
+}
+
+.customer_field_detail {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 0px;
+}
+
+
+/*多选下拉框样式*/
+.bootstrap-select button {
+    border-radius: 0px;
+    margin-bottom: 0px;
+    padding-left: 5px;
+    padding-top: 5px;
+    height: 35px;
+}
+
+.search-control, .bootstrap-select {
+    margin-bottom: 5px;
+    padding: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.filter-option {
+    margin-top: 1px;
+    font-size: 13px;
+}
+
+.bs-select-hidden {
+    float: left;
+    display: block !important;
+    margin-top: -100px;
+}
+
+select.bs-select-hidden, select.selectpicker {
+    display: block !important;
+    float: left;
+    margin-top: -1500px !important;
+}
+/*多选下拉框样式-End*/

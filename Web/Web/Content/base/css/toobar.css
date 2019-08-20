@@ -1,0 +1,13 @@
+﻿.fa {
+    padding-right: 2px !important;
+}
+
+.btn-toolbar {
+    color: #444444 !important;
+    margin-bottom: 4px;
+    padding: 3px;
+}
+
+    .btn-toolbar:hover {
+        background-color: #E3E3E3;
+    }

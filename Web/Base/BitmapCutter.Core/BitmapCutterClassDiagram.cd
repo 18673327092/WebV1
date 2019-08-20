@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Comment CommentText="Bitmap Cutter Server 1.0.0&#xD;&#xA;Jericho (c) 2008,2009 &#xD;&#xA;http://www.ajaxplaza.net">
+    <Position X="7.198" Y="0.5" Height="0.594" Width="1.7" />
+  </Comment>
+  <Class Name="BitmapCutter.Core.API.Callback">
+    <Position X="4.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>API\Callback.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BitmapCutter.Core.API.Cutter">
+    <Position X="2" Y="2.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAABAAALAAACAAAEAACAMEAAAQgAAAAAAAAAIBAYBA=</HashCode>
+      <FileName>API\Cutter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BitmapCutter.Core.API.Helper">
+    <Position X="4.5" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAQ=</HashCode>
+      <FileName>API\Helper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BitmapCutter.Core.HttpHandler.BitmapScissors" BaseTypeListCollapsed="true">
+    <Position X="2" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HttpHandler\BitmapScissors.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

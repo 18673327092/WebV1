@@ -1,0 +1,79 @@
+﻿    @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = ViewBag.Title;
+    var viewmodel = ViewBag.ViewModel as CRM.Model.Sys.Sys_View;
+    var PATH = string.IsNullOrEmpty(ViewBag.AreaName) ? "/" + ViewBag.Controller + "/" : "/" + ViewBag.AreaName + "/" + ViewBag.Controller + "/";
+}
+@section css{
+   @Html.Partial("_Layout-list-css")
+    @RenderSection("css", required: false)
+    <style type="text/css">
+        #btn-toolbar-refreshdata:hover, #btn-toolbar-external-link:hover {
+            background-color: #EBEBEB;
+        }
+        .page-header {
+            height: 30px;
+        }
+    </style>
+}
+@section breadcrumbs{
+    <a id="btn-toolbar-external-link" style="position: absolute; right: 0px; top: 2px; color: black; text-decoration: none; padding-left: 4px; " target="_blank" title="在新窗体打开" href="javascript://" class=""><i class="fa icon-align-justify"></i></a>
+}
+@RenderBody()
+<!--列表要显示的字段-->
+<input type="hidden" id="gridfields" value="@ViewBag.GridFields" />
+<input type="hidden" id="issearch" value="false" />
+@section viewlist{
+    <div class="btn-group">
+        <div id="viewtitle" style="border-color: white; font-size: 16px; margin-top: 0px;">@viewmodel.Title <span style="font-size:13px;"> @(!string.IsNullOrEmpty(viewmodel.Remark) ? "(" + viewmodel.Remark + ")" : "")</span></div>
+    </div>
+}
+<div class="nav-search" id="nav-search" style="top: -40px; right: 15px; ">
+    <div class="form-search">
+        <span class="input-icon">
+            <input type="text" id="KeyWord" placeholder="关键词搜索" style="width: 300px; padding: 2px 22px 0px 10px;" class="nav-search-input" autocomplete="off" />
+            <i id="btnSearch" class="icon-search nav-search-icon" style="cursor:pointer"></i>
+        </span>
+    </div>
+</div>
+<!--列表容器-->
+<div id="grid"></div>
+
+@section scripts{
+   @Html.Partial("_Layout-list-js")
+    <script type="text/javascript">
+        $(function () {
+            var pagesize = 15;
+            var option = {
+                title: "@(ViewBag.Title)",
+                path: "@(PATH)",
+                controller: "@(ViewBag.Controller)",
+                ischeckbox: false,
+                viewId: "@ViewBag.ViewID",
+                viewtype: "@ViewBag.ViewType",
+                viewtitle: "@ViewBag.ViewTitle",
+                eid: "@ViewBag.EntityID",
+                ename: "@ViewBag.EntityName",
+                columns: JSON.parse($("#gridfields").val()),
+                target: { type: parent.parent, area: ['88%', '96%'] }
+            };
+            if (top.location.href == location.href) {
+                $("#btn-toolbar-refreshdata").hide();
+                $("#btn-toolbar-external-link").hide();
+                $("#viewtitle").css({ "font-size": "21px", "margin-top": "3px" });
+                $("#nav-search").css({ "top": "-38px", "right": "0px" });
+                $("#KeyWord").css({ "width": "440px" });
+                option.pagesize = 20;
+            } else {
+                option.pagesize = request("pagesize");
+            }
+            layoutlist.init(option);
+            $("#grid").height($(window).height() - 42);
+            $(window).resize(function () {
+                $("#grid").height($(window).height() - 42);
+                layoutlist.refresh();
+            });
+        })
+    </script>
+    @RenderSection("scripts", required: false)
+}

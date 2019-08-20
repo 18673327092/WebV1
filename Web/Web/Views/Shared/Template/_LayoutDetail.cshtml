@@ -1,0 +1,205 @@
+﻿@using Utility.ResultModel
+@using Base.Model
+@{
+    Layout = "~/Views/Shared/_LayoutWindow.cshtml";
+    var Entity = ViewBag.EntityModel as Sys_Entity;
+    int EntityID = Entity.ID;
+    int ID = ViewBag.ID;
+    //操作按钮配置信息
+    var AccessOperations = ViewBag.AccessOperations as List<Sys_Operation>;
+    bool IsDialog = ViewBag.IsDialog == null ? Entity.IsDialog : Convert.ToBoolean(ViewBag.IsDialog); //弹窗布局
+    bool IsTab = ViewBag.IsTab == false ? true : Convert.ToBoolean(ViewBag.IsTab); //选项卡
+    Dictionary<string, string> PageData = new Dictionary<string, string>();
+    if (ViewBag.PageData != null)
+    {
+        PageData = ViewBag.PageData as Dictionary<string, string>;
+    }
+}
+@section css{
+    @System.Web.Optimization.Styles.Render("~/form/css")
+    @RenderSection("css", required: false)
+    <style>
+
+        .form_content_td{
+            width:250px;
+            border:solid 1px red;
+        }
+        td {
+            padding: 0px;
+            vertical-align: top;
+        }
+        .filedvalue span.form-control {
+            border: 0px;
+            border-bottom: 1px solid #D5D5D5;
+            margin-bottom: 2px;
+            background-color: white !important;
+        }
+        .form_label {
+            font-size: 14px;
+            background-color: rgb(215, 235, 249);
+            text-align: left;
+            display: inline-block;
+            height: 36px;
+            width: 130px;
+            line-height: 36px;
+            padding: 0px 10px;
+            margin-bottom: 2px;
+        }
+
+        .form_content {
+            margin: 0px;
+            position: relative;
+            line-height: 33px;
+            padding: 0px 5px;
+            margin-right: 5px;
+        }
+    </style>
+}
+@{
+    @section toolbar{
+        @RenderSection("operations", false)
+        @*<a data-title="编辑" id="btn-toolbar-edit" href="javascript://" class="Ischeck btn btn-toolbar"><i class="fa fa fa-edit"></i><span>编辑 </span></a>*@
+        @*操作按钮区域 Start *@
+        <a id="btn-form-close" href="javascript://" class="btn btn-toolbar" style="color: #2E2E2E;"><i class="fa icon-remove"></i>关闭</a>
+        @*操作按钮区域 End *@
+    }
+    <div style=" margin-top: 33px;">
+        @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "layui-form" }))
+        {
+            if (ViewBag.IsCustomizeFormPage != null && ViewBag.IsCustomizeFormPage == true)
+            {
+                @RenderBody()
+            }
+            else
+            {
+                Sys_Form form = ViewBag.FormModel as Sys_Form;
+                foreach (var fieldid in form.FormHideFieldsDB)
+                {
+                    @Html.FormHiddenControl(fieldid, ID)
+                }
+                <div class="whiteBox formBody">
+                    @*选项卡布局*@
+                    <div class="@(IsTab ? "layui-tab layui-tab-brief" : "")" lay-filter="docDemoTabBrief">
+                        @{
+                            if (IsTab && !string.IsNullOrEmpty(form.FormShowFieldsDB.FirstOrDefault().Name))
+                            {
+                                <ul class="layui-tab-title">
+                                    @{
+                                        int number = 0;
+                                        foreach (var s in form.FormShowFieldsDB)
+                                        {
+                                            var trs = s.Fields.Count / s.Colspan;
+                                            if (number++ == 0)
+                                            {
+                                                <li data-name="@s.Name" class="layui-this">@s.Name</li>
+                                            }
+                                            else
+                                            {
+                                                <li>@s.Name  </li>
+                                            }
+                                        }
+                                        number = 0;
+                                    }
+                                </ul>
+                            }
+                            <div class="@(IsTab ? "layui-tab-content" : "")">
+                                @{
+                                    int line = 0;
+                                    foreach (var s in form.FormShowFieldsDB)
+                                    {
+                                        if (!string.IsNullOrEmpty(s.Name) && !IsTab)
+                                        {
+                                            <div class="formTitle" id="@s.Name">@s.Name</div>
+                                        }
+                                        <div class="@(IsTab ? "layui-tab-item" : "")  @(line++ == 0&&IsTab ? "layui-show" : "")">
+
+                                            <table data-name="@s.Name" width="100%" border="0" cellspacing="0" cellpadding="8">
+                                                @{
+                                                    var trs = s.Fields.Count / s.Colspan;
+                                                    for (int tr = 1; tr <= trs; tr++)
+                                                    {
+                                                <tr>
+                                                    @{
+                                                        for (int td = 1; td <= s.Colspan; td++)
+                                                        {
+                                                            var field = s.Fields.Where(e => e.X == td && e.Y == tr).FirstOrDefault();
+                                                            if (field != null && field.FieldID > 0)
+                                                            {
+                                                                if (field.IsCustomizeControl.HasValue && field.IsCustomizeControl.Value)
+                                                                {
+                                                                    @RenderSection(field.FieldName, false)
+                                                                    <td></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td  class="form_label_td" width="100" align="right" style="">
+                                                                        <span class="form_label"> @field.Title</span>
+                                                                    </td>
+                                                                    <td  class="form_content_td" style=" border: 0px;padding: 0px;">
+                                                                        <div class="form_content">
+                                                                            @Html.GetText(field.FieldID, ID)
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (IsSectionDefined("Action_" + field.FieldName))
+                                                                        {
+                                                                            @RenderSection("Action_" + field.FieldName);
+                                                                        }
+                                                                        @if (!string.IsNullOrEmpty(field.Remark))
+                                                                        {
+                                                                            <span style="color: gray; padding: 0px 5px; margin-top: 3px; display: inline-block;"></span>
+                                                                        }
+                                                                    </td>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                    }
+                                                }
+                                            </table>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                        @RenderBody()
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
+@RenderSection("tablist", false)
+@section scripts{
+    <script src="~/Content/plugin/layui/build/layui.js"></script>
+    <script type="text/javascript">
+        $("#btn-toolbar-edit").on("click", function () {
+            layer.load(1);
+            var url = location.href;
+            location.href = url.replace("Detail", "Form");
+        });
+        var index = 0;
+        if (parent.layer && parent.layer.getFrameIndex) {
+            index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        }
+        $("#btn-form-close").on("click", function () {
+            if (top.location.href == location.href) {
+                window.opener = null;
+                window.open('', '_self');
+                window.close();
+            } else {
+                parent.layer.close(index);
+            }
+        });
+
+        function resize() {
+            var _width = $(".filedtitle").width();
+            var _width = _width + 24;
+            $(".md12").find(".filedtitle").css({ width: _width, float: "left" });//.width(156)
+            $(".md12").find(".filedvalue").width($(window).width() - _width - 25)
+        }
+        setInterval(function () { resize(); }, 10);
+    </script>
+    @RenderSection("scripts", required: false)
+}

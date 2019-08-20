@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <!-- 基本样式 -->
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-skins.min.css" />
+    @*<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />*@
+    <!--其他插件样式-->
+    @System.Web.Optimization.Styles.Render("~/_layout/css")
+    @RenderSection("css", required: false)
+    <style>
+        .main-content1 {
+            /* padding: 2px 5px 0px 5px !important; */
+        }
+
+        .page-content {
+            background: #fff;
+            margin: 0;
+            padding-left: 12px;
+            padding-bottom: 11px;
+            margin-top: 0px;
+            /* padding: 0px 0px 0px 0px !important; */
+        }
+
+        .formTitle {
+            font-size: 18px;
+            margin-bottom: 6px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container" id="main-container">
+        <div class="main-container-inner">
+            <div class="main-content1">
+                <div class="breadcrumbs" id="breadcrumbs" style="">
+                    <div></div>
+                    <ul class="breadcrumb" style="margin: 0 22px 0 12px;">
+                        <li>
+                            @RenderSection("toolbar", false)
+                        </li>
+                    </ul>
+                </div>
+                <div class="page-content" style=" background: #fff; margin: 0; padding-left: 12px; padding-bottom: 11px; margin-top: 0px;">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+    @System.Web.Optimization.Scripts.Render("~/_layout/js")
+    <script src="~/Content/plugin/layer/layer.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

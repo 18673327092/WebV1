@@ -1,0 +1,231 @@
+﻿@using Base.Model;
+@using Base.Model.Sys.Model;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var viewmodel = ViewBag.ViewModel as Sys_View;
+    ViewBag.Title = ViewBag.Title + " " + viewmodel.Title;
+    var PATH = string.IsNullOrEmpty(ViewBag.AreaName) ? "/" + ViewBag.Controller + "/" : "/" + ViewBag.AreaName + "/" + ViewBag.Controller + "/";
+    List<Sys_Operation> ListOperations = new List<Sys_Operation>();
+    ListOperations.Add(new Sys_Operation
+    {
+        OperateName = "查看",
+        Style = "",
+        Fun = "fun.detail",
+    });
+    var AccessOperations = ViewBag.AccessOperations as List<Sys_Operation>;
+    foreach (var item in AccessOperations.Where(e => e.IsListShow).ToList())
+    {
+        if (item.IsListShow)
+        {
+            ListOperations.Add(item);
+        }
+    }
+}
+@section css{
+    @Html.Partial("_Layout-list-css")
+    <link href="~/Content/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/bootstrap/css/bootstrap_select.css" rel="stylesheet" />
+    <link href="~/Content/plugin/tooltipster-master/dist/css/tooltipster.bundle.min.css" rel="stylesheet" />
+    @RenderSection("css", required: false)
+    <style>
+        .listoperations a {
+            color: #2a6496;
+            cursor: pointer
+        }
+    </style>
+}
+@section operations{
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+        </script>
+        <div></div>
+        <ul class="breadcrumb" style="width:100%">
+            <li style="float:left;">
+                @{
+                    if (AccessOperations.Exists(e => e.IsListHeadShow))
+                    {
+                        foreach (var item in AccessOperations.Where(e => e.IsListHeadShow).ToList())
+                        {
+                            //if (viewmodel.Title == "回收站")
+                            //{
+                            //    if (item.OperateName == "删除")
+                            //    {
+                            //        item.OperateName = "还原";
+                            //        item.Icon = "icon-ok";
+                            //    }
+                            //    else if (item.OperateName == "彻底删除") { }
+                            //    else
+                            //    {
+                            //        continue;
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    if (item.OperateName == "还原")
+                            //    {
+                            //        item.OperateName = "删除";
+                            //        item.Icon = "fa-trash-o";
+                            //    }
+                            //    else if (item.OperateName == "彻底删除")
+                            //    {
+                            //        continue;
+                            //    }
+                            //}
+                            if (item.IsListHeadShow)
+                            {
+                                <a data-title="@item.OperateName" style='@(item.Ischeck ? "display:none" : "") ' id="@item.BtnID" href="javascript://" class="@(item.Ischeck ? "Ischeck" : "") btn btn-toolbar"><i class="fa @item.Icon"></i><span>@item.OperateName</span></a>
+                            }
+                        }
+                        @RenderSection("operations", false)
+                        <a href="javascript://" id="btn-toolbar-refreshdata" class="btn btn-toolbar"><i class="fa icon-refresh"></i><span>刷新</span></a>
+                        <a href="javascript://" id="btn-toolbar-external-link" target="_blank" title="在新窗体打开" class="btn btn-toolbar"><i class="fa icon-resize-full"></i>新窗体打开 </a>
+                        <input type="hidden" id="operations" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(ListOperations))" />
+                    }
+                }
+            </li>
+        </ul>
+    </div>
+}
+@section search_panel{
+    @{
+        if (ViewBag.IsCustomizeSearchControl == null || ViewBag.IsCustomizeSearchControl == false)
+        {
+            <div id="search-panel" class="search-panel">
+                @{
+                    //查询控件
+                    List<SearchField> SearchFieldList = ViewBag.SearchField as List<SearchField>;
+                    foreach (var item in SearchFieldList)
+                    {
+                        if (item.IsCustomizeSearchControl.HasValue && item.IsCustomizeSearchControl.Value && IsSectionDefined(item.Name))
+                        {
+                            <div style="float: left; margin-right: 2px;display:@(@item.SearchControIsForView?"inline-block":"none")"> @RenderSection(item.Name, false)</div>
+                        }
+                        else
+                        {
+                            <div style="float: left; margin-right: 2px;">
+                                <span style="float: left;margin-right: 5px;height: 30px;display: inline-block;line-height: 30px;">@item.Title</span>@Html.InitSearchControler(item)
+                            </div>
+                        }
+                    }
+
+                    if (SearchFieldList.Count > 0)
+                    {
+                        <div style="float: left; margin-right: 2px;">
+                            <button id="btn_FieldSearch" class="search-button btn btn-primary">搜 索</button>
+                            <button id="btn_ClearSearchFiled" class="search-button btn btn-file">重 置</button>
+                        </div>
+                    }
+                }
+                <div style="clear:both"></div>
+            </div>
+        }
+    }
+    <div style="clear:both;"></div>
+}
+@RenderBody()
+<input type="hidden" id="gridfields" value="@ViewBag.GridFields" />
+<input type="hidden" id="issearch" value="false" />
+<input type="hidden" id="Filter" value="" />
+<iframe id="ifile" style="display: none"></iframe>
+@section viewlist{
+    @*<i style="font-size: 14px; margin-right: -5px;" class="icon-unlock"></i>*@
+    <div class="btn-group">
+        @if (viewmodel.Type == "系统视图" || viewmodel.Type == "自定义视图")
+        {
+            <i class=" search_remove"></i><a style="border-color: white; font-size: 21px; padding:2px 5px; " class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">@viewmodel.Title@*<span class="caret"></span>*@</a>
+            @*<ul class="dropdown-menu" role="menu">
+                @{
+
+                    var ViewList = ViewBag.ViewList as List<Sys_View>;
+                    var systemViewList = ViewList.Where(e => e.Type == "系统视图").ToList();
+                    int z = 0;
+                    foreach (var item in systemViewList)
+                    {
+                        if (z++ == 0)
+                        {
+                            <li><a style="background-color:white !important;color:black;" href="javascript://"><b>系统视图</b></a></li>
+                        }
+                        <li><a href="@Request.Path?v=@item.ID&menuid=@Request.QueryString["menuid"]">@item.Title</a></li>
+                    }
+                    if (systemViewList != null && systemViewList.ToList().Count > 0)
+                    {
+                        <li class="divider"></li>
+                    }
+
+                    var UserID = Convert.ToInt32(ViewBag.UserID);
+                    var customerViewList = ViewList.Where(e => e.Type == "自定义视图" && e.OwnerID == UserID);
+                    if (customerViewList != null && customerViewList.ToList().Count > 0)
+                    {
+                        int i = 0;
+                        foreach (var item in customerViewList)
+                        {
+                            if (i++ == 0)
+                            {
+                                <li><a style="background-color:white !important;color:black;" href="javascript://"><b>自定义视图</b></a></li>
+                            }
+
+                            <li><a href="@Request.Path?v=@item.ID&menuid=@Request.QueryString["menuid"]">@item.Title</a></li>
+                        }
+                        <li class="divider"></li>
+                    }
+                }
+                <li><a href="javascript://" id="" onclick="layoutlist.toview(0, '创建新视图');">创建新视图</a></li>
+            </ul>*@
+        }
+        else
+        {
+            <i class=" search_remove"></i><a style="border-color: white; font-size: 21px; padding:2px 5px; " class="btn btn-default dropdown-toggle">@ViewBag.Title </a>
+        }
+    </div>
+}
+<!--列表容器-->
+<div id="grid"></div>
+@section scripts{
+    <script src="~/Content/plugin/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="~/Content/plugin/tooltipster-master/dist/js/tooltipster.bundle.min.js"></script>
+    @Html.Partial("_Layout-list-js")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+                var operations = JSON.parse($("#operations").val());
+                var columns = JSON.parse($("#gridfields").val());
+                columns.insert(0,{
+                    field: "@(ViewBag.EntityName)$ID", title: "操作", width: parseInt(operations.length * 40)+10 + "px",
+                    headerAttributes: {
+                        class: "table-header-cell",
+                        style: "text-align: center; font-size: 14px"
+                    },
+                    attributes: {
+                        class: "table-cell",
+                        style: "text-align: center;"
+                    },
+                    template: function (data) {
+                        var _list = [];
+                        $.each(operations, function (m, n) {
+                            _list.push('<a id="0" class="' + (n.Style == "" ? "" : n.Style) + '" title="' + n.OperateName + '" onclick="' + n.Fun + '(' + data["@(ViewBag.EntityName)$ID"] + ',\'' + data["@(ViewBag.EntityName)$Name"] + '\',' +@ViewBag.ViewID+',' + data["peta_rn"] + ')">' + n.OperateName + '</a>');
+                        });
+                        return "<span class='listoperations'>" + _list.join('&nbsp;&nbsp;')+"</span>";
+                    },
+                    sortable: false
+                });
+                var option = {
+                    title: "@ViewBag.Title",
+                    path: '@PATH',
+                    controller: "@(ViewBag.Controller)",
+                    ischeckbox: true,
+                    viewId: "@ViewBag.ViewID",
+                    viewtype: "@ViewBag.ViewType",
+                    viewtitle: "@ViewBag.ViewTitle",
+                    eid: "@ViewBag.EntityID",
+                    ename: "@ViewBag.EntityName",
+                    columns: columns,
+                    reduceheight: "@(ViewBag.ReduceHeight == null ? 76 : ViewBag.ReduceHeight)",
+                    isdialog: "@ViewBag.IsDialog",
+                    pagesize: 30,
+                    area: ["@(ViewBag.DialogWidth)", "@(ViewBag.DialogHeight)"]
+                };
+                $(function () {
+                    layoutlist.init(option);
+                });
+    </script>
+}

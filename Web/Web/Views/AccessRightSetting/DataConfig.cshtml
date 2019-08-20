@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "数据权限配置";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css{
+    @Html.Partial("_Layout-list-css")
+    <link href="~/Content/plugin/layui/build/css/layui.css" rel="stylesheet" />
+    <style>
+        .layui-tab-content {
+            padding: 10px 0px 0px 0px;
+        }
+
+        label {
+            font-size: 12px;
+            margin-top: -4px;
+        }
+
+        .ViewRight {
+            margin-right: 20px !important;
+        }
+
+        .EditRight {
+            margin-right: 17px !important;
+        }
+
+        .DeleteRight {
+            margin-right: 10px !important;
+        }
+
+        .badge {
+            cursor: pointer;
+        }
+        label {
+            font-size: 12px;
+            margin-top: -4px;
+        }
+
+        textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+            font-size: 13px !important;
+        }
+
+        .main-content1 {
+            padding: 2px 5px 0px 5px !important;
+        }
+
+        .page-content {
+            background: #fff;
+            margin: 0;
+            padding: 0px 0px 0px 0px !important;
+        }
+    </style>
+}
+@section breadcrumbs{
+
+    <div class="breadcrumbs" id="breadcrumbs">
+        <span>当前角色：<span style="font-weight:bold">【@ViewBag.RoleName】</span></span>
+        <span style='color: red; margin-left:10px; '>选择好权限后，请点击 “保存” 按钮</span>
+        <ul class="breadcrumb" style="margin-left:10px;">
+            <li>
+                <button class="btn btn-primary" style="height: 28px; margin-top: -7px; padding-top: 4px;" onclick="Save()" type="button">
+                    保 存
+                </button>
+                @* <a href="javascript://" onclick="Save()" class="btn btn-toolbar"><i class="fa fa-save"></i>保存</a>*@
+            </li>
+        </ul><!-- .breadcrumb -->
+        <!-- #nav-search -->
+        <span style='margin-left:10px; '>可处理数据范围图示</span>
+        <span class="badge badge-success">个人</span>
+        <span class="badge badge-info">部门</span>
+        @*<span class="badge badge-success">上下级部门</span>*@
+        <span class="badge badge-inverse">全部</span>
+    </div>
+}
+
+@section scripts{
+    @System.Web.Optimization.Scripts.Render("~/dataconfig/js")
+}
+<input type="hidden" id="hid_RoleID" value="@ViewBag.RoleID" />
+<input type="hidden" id="ParentID" />
+<div id="grid"></div>

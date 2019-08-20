@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "~/Views/Shared/Template/_LayoutList.cshtml";
+}
+@section scripts{
+    <script>
+        $(function () {
+            //分配角色
+            $("#btn-toolbar-roles").click(function () {
+                var ids = layoutlist.grid.getcheckedid();
+                if (ids.length == 0) { dlg.alert("请选择用户数据"); return; };
+                if (ids.length > 1) { dlg.alert("请选择某一个用户"); return; };
+                dlg.openframe({
+                    title: "用户分配角色",
+                    offset: ['10px'],
+                    type: 2,
+                    //btn: ['确定', '取消'],
+                    //shade: 0,
+                    area: ['430px', '460px'],
+                    fixed: true, //不固定
+                    maxmin: false,
+                    content: "/User/RoleList?t=0&fieldid=1&value=" + ((typeof value) != "undefined" ? value : "") + "&id=1&UID=" + ids + "",
+                    yes: function (index) {
+                        parent.layer.close(index);
+                    },
+                });
+            });
+
+            //分配岗位
+            $("#btn-toolbar-assign-job").click(function () {
+                var ids = layoutlist.grid.getcheckedid();
+                if (ids.length == 0) { dlg.alert("请选择用户数据"); return; };
+                if (ids.length > 1) { dlg.alert("请选择某一个用户"); return; };
+                dlg.openframe({
+                    title: "用户分配岗位",
+                    offset: ['10px'],
+                    type: 2,
+                    //btn: ['确定', '取消'],
+                    //shade: 0,
+                    area: ['430px', '460px'],
+                    fixed: true, //不固定
+                    maxmin: false,
+                    content: "/User/JobList?t=0&fieldid=1&value=" + ((typeof value) != "undefined" ? value : "") + "&id=1&UID=" + ids + "",
+                    yes: function (index) {
+                        parent.layer.close(index);
+                    },
+                });
+            });
+        })
+    </script>
+}

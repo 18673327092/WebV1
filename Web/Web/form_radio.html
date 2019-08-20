@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--<link href="Content/plugin/layui/css/layui-form.css" rel="stylesheet" />-->
+    <link href="Content/plugin/layui/css/layui-form-radio.css" rel="stylesheet" />
+    <script src="Content/plugin/jquery/jquery-1.8.3.js"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style>
+    </style>
+</head>
+<body>
+    <div class='radio-switch'>
+        <span></span>
+        <input name='chk' type='radio' value='1' data-title='启用'/>
+        <input name='chk' type='radio' value='0' data-title='停用'/>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    $(function () {
+        $(".radio-switch").each(function (m, n) {
+            var radio_yes = $(n).find("input:eq(0)");
+            var radio_no = $(n).find("input:eq(1)");
+            var radio_span = $(n).find("span");
+            var ischecked = $(n).attr("checked");
+            if (typeof ischecked != "undefined") {
+                radio_yes.prop("checked", "checked");
+                radio_span.html($('<div class="radio-switch-item layui-form-switch layui-form-onswitch" data-title="' + radio_yes.data("title") + '"><em>' + radio_yes.data("title") + '</em><i></i></div>'));
+            } else {
+                radio_no.prop("checked", "checked");
+                radio_span.html($('<div class="layui-form-switch"  data-title="' + radio_no.data("title") + '"><em>' + radio_no.data("title") + '</em><i></i></div>'));
+            }
+        });
+        $(".layui-form-switch").click(function () {
+            var radio_yes = $(".radio-switch").find("input:eq(0)");
+            var radio_no = $(".radio-switch").find("input:eq(1)");
+            if ($(this).hasClass("layui-form-onswitch")) {
+                $(this).removeClass("layui-form-onswitch").find("em").html(radio_no.data("title"));
+                 radio_no.prop("checked", "checked");
+            } else {
+                $(this).addClass("layui-form-onswitch").find("em").html(radio_yes.data("title"));
+                radio_yes.prop("checked", "checked");
+            }
+        });
+    });
+
+</script>

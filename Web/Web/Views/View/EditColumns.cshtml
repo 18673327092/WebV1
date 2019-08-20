@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "编辑列";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="keywords" content="CRM" />
+    <meta name="description" content="CRM" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 基本样式 -->
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/Content/plugin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace-skins.min.css" />
+    @System.Web.Optimization.Styles.Render("~/editcolumns/css")
+</head>
+
+<body style="padding: 13px 55px 0px 13px; ">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 style=" margin-top: 0px;">编辑列</h2>
+            <div style="margin-bottom:10px;">编辑此视图上的列。这些列的数据将会在视图中显示。</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-xs-10 col-md-10" style=" padding-left: 0px;   padding-right: 0px;">
+                <div class="table-responsive" style="overflow: auto; border: solid 1px #DDDDDD; ">
+                    <table id="columns_container" style=" margin-bottom: 0px; border: 0px;" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="center" colspan="124" style="color: #999999; background-color: white; height: 200px; vertical-align: middle; ">
+                                    <span style="position:fixed;left:300px;">查看结果会在此处显示。</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-xs-2 col-md-2" style="padding-right:0px;padding-left:0px;">
+                <div class="dropup dropdown-preview" style="margin-left:10px;">
+                    <ul class="dropdown-menu dropdown-light" style="height:200px;">
+                        <li style="text-align: center; margin-bottom: 10px;">
+                            <i id="toleft" style="margin: 12px 10px 0px 5px; padding: 8px 12px;  " class="icon-arrow-left"></i>
+                            <i id="toright" style="margin: 12px 10px 0px 5px; padding: 8px 12px;  " class="icon-arrow-right"></i>
+                        </li>
+                        <li style=" border-bottom: solid 1px #ccc;">
+                            <a href="javascript://" id="editcolumnsort" tabindex="-1"><i class="icon-sort" style="margin-right:5px;"></i>配置默认排序</a>
+                        </li>
+                        <li style=" border-bottom: solid 1px #ccc;">
+                            <a href="javascript://" id="addcolumn" tabindex="-1"><i class="icon-plus" style="margin-right:2px;"></i>添加列</a>
+                        </li>
+                        <li style=" border-bottom: solid 1px #ccc;">
+                            <a href="javascript://" id="editcolumnattr" tabindex="-1"><i class=" icon-edit" style="margin-right:2px;"></i>编辑属性</a>
+                        </li>
+                        <li style=" border-bottom: solid 1px #ccc;">
+                            <a href="#" tabindex="-1" id="removecolumn"><i class=" icon-remove" style="margin-right:2px;"></i>移除列</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="fields" value="@ViewBag.FieldList" />
+    <input type="hidden" id="EntityName" value="@ViewBag.EntityName" />
+    <input type="hidden" id="viewsort" value="@ViewBag.viewsort" />
+    <input type="hidden" id="UserID" value="@ViewBag.UserID" />
+    <input type="hidden" id="fielddata" />
+    <script src="~/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+    <script src="~/Content/plugin/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/plugin/layer/layer.js"></script>
+    @System.Web.Optimization.Scripts.Render("~/editcolumns/js")
+    <script type="text/javascript">
+        editcolumns.init({ UserID: $("#UserID").val() });
+    </script>
+</body>
+</html>

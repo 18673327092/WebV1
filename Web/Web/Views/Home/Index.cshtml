@@ -1,0 +1,109 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@Utility.ApplicationContext.AppSetting.WEB_SITE_NAME</title>
+    <meta name="keywords" content="CRM" />
+    <meta name="description" content="CRM" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="Shortcut Icon" href=/logo.ico>
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-skins.min.css" />
+    @*<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />*@
+    <link rel="stylesheet" href="~/Content/plugin/font-awesome/css/font-awesome.css" />
+    <link href="~/Content/plugin/layui/build/css/layui.css" rel="stylesheet" />
+    <style>
+        .layui-tab {
+            margin: 0px;
+        }
+
+        .ace-nav > li > a {
+            background-color: #438eb9;
+        }
+
+        .curr {
+        }
+    </style>
+    <!--其他插件样式-->
+    <script src="~/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+    <script src="~/Content/plugin/assets/js/ace-extra.min.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-default" id="navbar">
+        <script type="text/javascript">
+            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+        </script>
+        <div class="navbar-container" id="navbar-container">
+            <div class="navbar-header pull-left">
+                <a href="#" class="navbar-brand">
+                    <small>
+                        @*<i class="icon-leaf"></i>*@
+                        @Utility.ApplicationContext.AppSetting.WEB_SITE_NAME
+                    </small>
+                </a>
+            </div>
+            <div class="navbar-header pull-left">
+                <ul class="nav ace-nav">
+
+                    @*<li class="blue"><a href="#"><i class="icon-envelope "></i>系统开发设置  </a></li>
+                        <li class="green"><a href="#"><i class="icon-envelope "></i>系统开发设置  </a></li>
+                        <li class="grey"><a href="#"><i class="icon-envelope "></i>系统开发设置  </a></li>
+                        <li class="red"><a href="#"><i class="icon-envelope "></i>系统开发设置  </a></li>*@
+                </ul>
+            </div>
+            <div class="navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <!--头部功能菜单-->
+                    @*@Html.Partial("_HeadToobar")*@
+                    <!--登录用户信息-->
+                    @Html.Partial("_UserInfo")
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+        <div class="main-container-inner">
+            <a class="menu-toggler" id="menu-toggler" href="#">   <span class="menu-text"></span> </a>
+            <div class="sidebar " id="sidebar">
+                <script type="text/javascript">
+                    try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+                </script>
+                <ul class="nav nav-list">@Html.Partial("_Menu") </ul>
+                <script type="text/javascript">
+                    try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+                </script>
+                <script type="text/javascript">
+                                                                                                    //   try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+                </script>
+                <div class="sidebar-collapse" id="sidebar-collapse">
+                    <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+                </div>
+            </div>
+            <div class="main-content">
+                <div class="layui-tab layui-tab-card " lay-filter="menu" lay-allowclose="true">
+                    <ul id="tabTitle" class="layui-tab-title"></ul>
+                    <div class="layui-tab-content" style=" padding: 0px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/plugin/assets/js/bootstrap.min.js"></script>
+    <script src="~/Content/plugin/assets/js/ace-elements.min.js"></script>
+    <script src="~/Content/plugin/assets/js/ace.min.js"></script>
+    <script src="~/Content/plugin/layer/layer.js"></script>
+    <script src="~/Content/plugin/layui/build/layui.js"></script>
+    <script src="~/Content/base/js/common.js"></script>
+    <script src="~/Content/base/js/dialog.js"></script>
+    @System.Web.Optimization.Scripts.Render("~/home/js")
+</body>
+</html>

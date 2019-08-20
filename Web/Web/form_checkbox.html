@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        ol, ul {
+            list-style: none;
+        }
+
+        .multi-porp {
+        }
+
+            .multi-porp ul li {
+                float: left;
+                position: relative;
+                margin: 0 5px 5px 0;
+                padding: 1px;
+                line-height: 20px;
+                vertical-align: middle;
+            }
+
+                .multi-porp ul li a {
+                    display: block;
+                    padding: 4px 10px;
+                    color: #666;
+                    min-width: 10px;
+                    width: auto !important;
+                    text-align: center;
+                    text-decoration: none;
+                    border: 1px solid #eee;
+                    cursor: pointer;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+
+                .multi-porp ul li i {
+                    display: none;
+                    position: absolute;
+                    right: 1px;
+                    bottom: 1px;
+                    width: 14px;
+                    height: 14px;
+                    color: #1e99c7;
+                    font-size: 14px;
+                    line-height: 1em;
+                    overflow: hidden;
+                }
+
+                .multi-porp ul li.sys {
+                    background: #FFFFD0;
+                }
+
+                .multi-porp ul li.selected a {
+                    margin: -1px;
+                    color: #333;
+                    border: 2px solid #1e99c7;
+                }
+
+                .multi-porp ul li.selected i {
+                    display: block;
+                }
+    </style>
+    <link href="Content/base/css/iconfont.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="multi-porp">
+        <ul>
+            <li><a href="javascript:;">最新</a><i class="iconfont icon-check-mark"></i></li>
+            <li class="selected"><a href="javascript:;">热卖</a><i class="iconfont icon-check-mark"></i></li>
+            <li><a href="javascript:;">推荐</a><i class="iconfont icon-check-mark"></i></li>
+            <li><a href="javascript:;">特价</a><i class="iconfont icon-check-mark"></i></li>
+        </ul>
+        <span id="cblActionType" style="display: none;">
+            <input id="cblActionType_0" type="checkbox" name="cblActionType$0">
+            <label for="cblActionType_0">最新</label>
+            <input id="cblActionType_1" type="checkbox" name="cblActionType$1">
+            <label for="cblActionType_1">热卖</label>
+            <input id="cblActionType_2" type="checkbox" name="cblActionType$2"><label for="cblActionType_2">推荐</label>
+            <input id="cblActionType_3" type="checkbox" name="cblActionType$3"><label for="cblActionType_3">特价</label>
+        </span>
+    </div>
+</body>
+</html>
+<script src="Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".multi-porp ul li").click(function () {
+            if ($(this).hasClass("selected")) {
+                $(this).removeClass("selected");
+            } else {
+                $(this).addClass("selected");
+            }
+        });
+    });
+</script>

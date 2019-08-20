@@ -1,0 +1,161 @@
+﻿
+/*视图锁住*/
+.vck {
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+    display: inline-block;
+    float: left;
+    margin-top: 11px;
+    margin-right: 0px;
+    cursor: pointer;
+}
+
+.vlock {
+    background: transparent url(/Content/imges/grid_ctrl_imgs.png) no-repeat scroll -97px -130px;
+}
+
+.vunlock {
+    background: transparent url(/Content/imges/grid_ctrl_imgs.png) no-repeat scroll -101px -112px;
+}
+
+/*视图锁-end*/
+
+
+/*/*筛选器*/
+.k-grid-header {
+    /*width: 99%;*/
+    /*float: left;
+    padding-right: 0px !important;
+    margin-right: 0px;*/
+}
+
+.cc {
+    padding: 0px 0px 0px 0px;
+    background-color: #F5F5F5;
+    padding-top: -2px;
+    height: 32px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 14px;
+    padding-left: 2px;
+}
+
+.cccurr {
+    background-color: #6FB3E1;
+}
+
+.cc > i {
+    margin-top: 10px;
+    margin-left: 1px;
+    width: 10px;
+}
+
+.k-grid-filter.k-state-active {
+    background-color: #72B5E2;
+}
+
+/*筛选器-end */
+
+
+.OpenLink:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.fancybox-button > img {
+    border-radius: 30px;
+}
+
+.k-grid-header th.k-with-icon .k-link {
+    /*margin-right: 0px !important;*/
+}
+
+
+
+.breadcrumbs {
+    MARGIN-BOTTOM: -4PX;
+}
+
+.search-panel {
+    background-color: white;
+    padding-bottom: 0px;
+}
+
+    .search-panel input {
+        border: solid 1px #ccc;
+        padding-left: 5px;
+    }
+
+
+
+.search-control {
+    display: block;
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+    vertical-align: middle;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    margin-right: 2px;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.search-button {
+    /*width: 70px;*/
+    margin-left: 5px;
+    z-index: 9999;
+    height: 30px;
+    padding-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+
+.search-control span {
+    cursor: default;
+    border: solid #ccc 1px;
+    padding-right: 23px;
+    height: 30px;
+    padding-left: 5px;
+}
+
+
+
+.bootstrap-select button {
+    border-radius: 0px;
+    margin-bottom: 0px;
+    height: 30px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.search-control, .bootstrap-select {
+    margin-bottom: 5px;
+}
+
+.filter-option {
+    margin-top: 1px;
+    font-size: 13px;
+}
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+    font-size: 13px !important;
+}
+
+.main-content1 {
+    padding: 2px 5px 0px 5px !important;
+}
+
+.page-content {
+    background: #fff;
+    margin: 0;
+    padding: 0px 0px 0px 0px !important;
+}
+
+
+.tooltip {
+    position: relative;
+    opacity: 1;
+}

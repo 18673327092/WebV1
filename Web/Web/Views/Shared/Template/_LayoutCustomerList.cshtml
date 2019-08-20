@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = ViewBag.Title;
+    var viewmodel = ViewBag.ViewModel as CRM.Model.Base.Sys_View;
+    var PATH = string.IsNullOrEmpty(ViewBag.AreaName) ? "/" + ViewBag.Controller + "/" : "/" + ViewBag.AreaName + "/" + ViewBag.Controller + "/";
+}
+@section css{
+    @Html.Partial("_Layout-list-css")
+    @RenderSection("css", required: false)
+    <style type="text/css">
+        #btn-toolbar-refreshdata:hover, #btn-toolbar-external-link:hover {
+            background-color: #EBEBEB;
+        }
+        .page-header {
+            height: 30px;
+        }
+    </style>
+}
+@section breadcrumbs{
+    @RenderSection("breadcrumbs", false)
+}
+@RenderBody()
+<input type="hidden" id="gridfields" value="@ViewBag.GridFields" />
+<input type="hidden" id="issearch" value="false" />
+@section viewlist{
+    @RenderSection("breadcrumbs", false)
+}
+<!--列表容器-->
+<div id="grid"></div>
+@section scripts{
+    @Html.Partial("_Layout-list-js")
+    <script type="text/javascript">
+        $(function () {
+            layoutlist.init({
+                title: "@(ViewBag.Title)",
+                path: "@(PATH)",
+                controller: "@(ViewBag.Controller)",
+                ischeckbox: false,
+                viewId: "@ViewBag.ViewID",
+                viewtype: "@ViewBag.ViewType",
+                viewtitle: "@ViewBag.ViewTitle",
+                eid: "@ViewBag.EntityID",
+                ename: "@ViewBag.EntityName",
+                columns: JSON.parse($("#gridfields").val()),
+                target: { type: parent.parent, area: ['88%', '96%'] }
+            });
+            $("#grid").height($(window).height() - 42);
+            $(window).resize(function () {
+                $("#grid").height($(window).height() - 42);
+                layoutlist.refresh();
+            });
+        })
+    </script>
+    @RenderSection("scripts", required: false)
+}

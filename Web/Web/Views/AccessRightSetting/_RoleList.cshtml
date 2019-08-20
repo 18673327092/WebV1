@@ -1,0 +1,45 @@
+﻿<link href="~/Content/plugin/zTree/css/zTreeStyle/metro.css" rel="stylesheet" />
+<script src="~/Content/plugin/zTree/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript">
+    var zTree;
+    var setting = {
+        view: {
+            showLine: true,
+            selectedMulti: false
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: ""
+            }
+        },
+        callback: {
+            beforeClick: function (treeId, treeNode) {
+                var zTree = $.fn.zTree.getZTreeObj("tree");
+                if (treeNode.isParent) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            onClick: zTreeOnClick
+        }
+    };
+    function zTreeOnClick(event, treeId, treeNode) {
+        currid = treeNode.id;
+        currname = treeNode.name;
+        $("#PageConfigFrame").attr("src", "/AccessRightSetting/PageConfig?id=" + treeNode.id + "&RoleName=" + treeNode.name)
+        $("#DataConfigFrame").attr("src", "/AccessRightSetting/DataConfig?id=" + treeNode.id + "&RoleName=" + treeNode.name)
+    };
+
+    var zNodes = JSON.parse($("#hid_Treelist").val());
+    $(document).ready(function () {
+        var t = $("#tree");
+        t = $.fn.zTree.init(t, setting, zNodes);
+        $("#tree_1>a").click();
+        //setTimeout(function () { $("#tree_1>ul>li:eq(1)>").click(); }, 500)
+        $("#tree_1>ul>li:eq(0)>").click();
+    });
+</script>

@@ -1,0 +1,47 @@
+﻿body {
+            padding-bottom: 0;
+            background-color: white !important;
+            font-family: 'Open Sans';
+            font-size: 13px;
+        }
+
+        .spinner-preview {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .dropdown-preview {
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+            .dropdown-preview > .dropdown-menu {
+                display: block;
+                position: static;
+                margin-bottom: 5px;
+            }
+
+        .curr {
+            border: #23B30C solid 2px !important;
+        }
+
+        #columns_container th:hover {
+            background-color: #B1D6F0 !important;
+            cursor: pointer;
+        }
+
+        #toleft:hover, #toright:hover {
+            background-color: #D7EBF9;
+            cursor: pointer;
+        }
+        .k-grid td {
+            border-style: solid;
+            border-width: 0 0 0 1px;
+            padding: 1px 4px !important;
+            overflow: hidden;
+            line-height: 18px !important;
+            vertical-align: middle;
+            text-overflow: ellipsis;
+        }

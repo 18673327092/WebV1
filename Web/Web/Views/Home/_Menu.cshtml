@@ -1,0 +1,55 @@
+﻿@using Base.Model;
+@{
+    var MenusAreas = ViewBag.MenusAreas as List<Sys_MenuArea>;
+    List<Sys_Menu> menus = ViewBag.Menus as List<Sys_Menu>;
+    var BasePath = "";
+    var AreaID = ViewBag.AreaID.ToString();
+    if (menus != null && menus.Count > 0)
+    {
+        int i = 0; foreach (var pmenu in menus)
+        {
+            if (pmenu.MenuArea.IndexOf(AreaID + ",") != -1 || AreaID == "0")
+            {
+                var pmenuurl = pmenu.MenuUrl; if (!string.IsNullOrEmpty(pmenu.MenuUrl)) { if (pmenu.MenuUrl.IndexOf("?") == -1) { pmenuurl += "?"; } else { pmenuurl += "&"; } pmenuurl += "menuid=" + pmenu.ID; } <li @(i == 0 ? "class=open" : "")>
+                    <a data-icon="@pmenu.Icon" name='@(pmenu.ChildMenuList == null ? "menuurl" : "")' data-url="@pmenuurl" href="javascript://" class="@(pmenu.ChildMenuList != null ? "dropdown-toggle" : "")">
+                        <i class="@pmenu.Icon"></i>
+                        <span class="menu-text">@pmenu.MenuName</span>
+                        @if (pmenu.ChildMenuList != null)
+                        {
+                            <b class="arrow icon-angle-down"></b>
+                        }
+                    </a>
+                    @if (pmenu.ChildMenuList != null && pmenu.ChildMenuList.Count > 0)
+                    {
+                        <ul class="submenu" @(i == 0 ? "style=display:block" : "")>
+                            @foreach (var menu in pmenu.ChildMenuList)
+                            {
+                                if (menu.IsNoMenu) { continue; }
+                                var menuurl = menu.MenuUrl;
+                                if (!string.IsNullOrEmpty(menu.MenuUrl))
+                                {
+                                    if (menu.MenuUrl.IndexOf("?") == -1)
+                                    {
+                                        menuurl += "?";
+                                    }
+                                    else
+                                    {
+                                        menuurl += "&";
+                                    }
+                                    menuurl += "menuid=" + menu.ID;
+                                }
+                                <li>
+                                    <a data-icon="@menu.Icon" name="menuurl" href="javascript://" data-url="@menuurl">
+                                        <i class="icon-double-angle-right"></i>
+                                        @menu.MenuName
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+                i++;
+            }
+        }
+    }
+}

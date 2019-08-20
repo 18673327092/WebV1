@@ -1,0 +1,145 @@
+﻿@using Base.Model.Sys.Model
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="keywords" content="CRM" />
+    <meta name="description" content="CRM" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 基本样式 -->
+    <link rel="stylesheet" href="/Content/plugin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/kendo/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/kendo/styles/kendo.bootstrap.min.css" />
+
+    <link href="~/Content/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/bootstrap/css/bootstrap_select.css" rel="stylesheet" />
+    @System.Web.Optimization.Styles.Render("~/relationfieldselectpanel/css")
+</head>
+<body style=" margin: 1px 10px 10px 10px;">
+
+    <input type="hidden" id="vid" value="@ViewBag.ViewID" />
+    <input type="hidden" id="eid" value="@ViewBag.EntityID" />
+    <input type="hidden" id="RelationEntity" value="@ViewBag.RelationEntity" />
+    <input type="hidden" id="FieldId" value="@ViewBag.FieldId" />
+    <input type="hidden" id="Filter" value="@ViewBag.Filter" />
+    <input type="hidden" id="WhereSql" value="@ViewBag.WhereSql" />
+    <input type="hidden" id="height" value="@ViewBag.height" />
+    <input type="hidden" id="page" value="@ViewBag.page" />
+    <input type="hidden" id="issearch" value="false" />
+    <div>
+        <input type="hidden" id="hid_selectvalueId" value="@ViewBag.Value" />
+        <input type="hidden" id="columns" value="@ViewBag.Columns" />
+        @{
+            if (ViewBag.IsCustomSeleach == null || ViewBag.IsCustomSeleach == false)
+            {
+                <div id="search-panel" style="margin-top:7px;" class="search-panel">
+                    @{
+                        List<SearchField> SearchFieldList = ViewBag.SearchField as List<SearchField>;
+                        foreach (var item in SearchFieldList)
+                        {
+                            switch (item.FieldType)
+                            {
+                                case "单行文本":
+                                case "多行文本":
+                                    <input class="search-control SearchField" data-field="@item.Field" data-type="@item.FieldType" placeholder="@(item.Title)">
+                                    break;
+                                case "两个选项":
+                                case "选项集":
+                                case "选项集多选":
+                                    <select data-actions-box="true" title="@(item.Title)" data-width="150px" data-sort=@item.Sort id="@item.Field" class="SearchField selectpicker selectpicker" @(item.IsMultiple.HasValue && item.IsMultiple.Value ? "multiple" : "") data-field="@item.Field" data-type="@item.FieldType">
+                                        <option value="">全部</option>
+                                        @foreach (var dic in item.DictionaryList)
+                                        {
+                                            <option value="@dic.Value">@dic.Name</option>
+                                        }
+                                    </select>
+                                    break;
+                                case "日期":
+                                    <div style="float:left">
+                                        <input data-field="@item.Field" data-type="日期" data-opera=">=" onclick="laydate({ istime: false, format: 'YYYY-MM-DD' }) " placeholder="@(item.Title)[起始]" class="SearchField search-control laydate-icon date">
+                                        <span style=" float: left; margin-top: 2px; width: 15px;">至</span>
+                                        <input data-field="@item.Field" data-type="日期" data-opera="<=" onclick="laydate({ istime: false, format: 'YYYY-MM-DD' }) " placeholder="@(item.Title)[结束]" class="SearchField search-control laydate-icon date">
+                                    </div>
+                                    break;
+                                case "时间":
+                                    <div style="float:left">
+                                        <input data-field="@item.Field" data-type="时间" data-opera=">=" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'}) " placeholder="@(item.Title)[起始]" class="SearchField search-control laydate-icon time">
+                                        <span style=" float: left; margin-top: 2px; width: 15px;">至</span>
+                                        <input data-field="@item.Field" data-type="时间" data-opera="<=" onclick="laydate({ istime: true, format: 'YYYY-MM-DD hh:mm:ss' }) " placeholder="@(item.Title)[结束]" class="SearchField search-control laydate-icon time">
+                                    </div>
+                                    break;
+                                case "关联其他表":
+                                    <div class="search-control" id="">
+                                        <span class="search-span" id="span_@(item.ID)0" data-fieldid="@item.ID" data-id="0" data-value="" onclick="relationfieldselectpanelmulti.open_field_dialog(this)" style="float:left;" data-title="选择@(item.Title)">选择@(item.Title)</span>
+                                        <input data-id="@(item.ID)" id="input_@(item.ID)0" class="SearchField" type="hidden" data-field="@item.Field" data-type="关联其他表">
+                                        <i id="icon_@(item.ID)0" class="search-icon icon-search nav-search-icon" data-fieldid="@item.ID" data-id="0" data-value="" onclick="relationfieldselectpanelmulti.open_field_dialog(this)" style="float: left; margin-top: 9px; margin-left: -20px; "></i>
+                                    </div>
+                                    break;
+                            }
+                        }
+                        if (SearchFieldList.Count > 0)
+                        {
+                            <div style=" display: inline-block;">
+                                <button id="btn-search" class="search-button btn btn-primary">搜 索</button>
+                                <button id="btn-reset" class="search-button btn btn-file">重 置</button>
+                            </div>
+                        }
+                    }
+
+                </div>
+            }
+        }
+        <div style="clear:both;"></div>
+        @*<span class="input-icon" style="margin-bottom: 10px;margin-top:10px; width:100%">
+
+                <input class="form-tag filed form-field form-control text-box single-line" id="KeyWord" style="height: 29px; padding: 2px 6px; " type="text" placeholder="输入关键字搜索" />
+                <i id="btn-search" class="icon-search nav-search-icon" style="cursor: pointer; top: 1px;"></i>
+            </span>*@
+        <div id="dicgrid" style="height: @(ViewBag.height)px"></div>
+        <table border="0" style="width:100%">
+            <tr>
+                <td style=" width: 100px; background-color: white; padding-right: 11px; padding-top: 13px; ">
+                    <input id="btn-select" type="button" value="选择" style="width: 100%; margin-bottom: 6px; background-color: white; border: solid 1px #ccc !important; margin-right: 22px; padding-right: 10px; " />
+                    <br />
+                    <input id="btn-remove-all" type="button" value="移除全部" style="width: 100%; background-color: white; border: solid 1px #ccc !important; margin-right: 22px; padding-right: 10px; " />
+                </td>
+                <td style=" width: 100%;">
+                    <div id="select_value" style=" width: 100%; height: 66px; overflow-y: scroll; border: solid 1px #ccc; margin-top: 13px; padding: 1px 5px;">
+                        @{
+                            var SelectValue = ViewBag.SelectValue as List<RelationEntityField>;
+                            foreach (var item in SelectValue)
+                            {
+                                <span class="select_span" data-name="@item.Name" data-id="@item.ID"><span class="title"><i class="fa icon-ok-circle"></i>@item.Name</span><input type="hidden" class="value" value="@item.ID"></span>
+                            }
+                        }
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="layui-layer-btn layui-layer-btn-" style="padding-bottom: 0px; padding-top: 8px;">
+        <a id="btn-save" class="layui-layer-btn0">确定</a>
+        <a id="btn-cancel" class="layui-layer-btn1">取消</a>
+        <a id="btn-remove" class="layui-layer-btn1" style="display:none;">移除</a>
+    </div>
+    <script src="~/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+    <script src="~/Content/plugin/layer/layer.js"></script>
+    <script src="/Content/plugin/page/js/layout.js"></script>
+    <script src="~/Content/plugin/icheck-1.x/icheck.min.js"></script>
+    <script src="~/Content/plugin/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    @System.Web.Optimization.Scripts.Render("~/relationfieldselectpanelmulti/js")
+    <script type="text/javascript">
+        relationfieldselectpanelmulti.init(
+            {
+                id: '@(ViewBag.Field)@(ViewBag.ID)',
+                ischeckbox: true,
+                relationentity: $("#RelationEntity").val()
+            });
+    </script>
+</body>
+</html>

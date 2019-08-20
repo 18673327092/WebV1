@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="keywords" content="CRM" />
+    <meta name="description" content="CRM" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="Shortcut Icon" href=/logo.ico>
+    <!-- 基本样式 -->
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-skins.min.css" />
+    @*<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />*@
+    <!--其他插件样式-->
+    @System.Web.Optimization.Styles.Render("~/_layout/css")
+    @RenderSection("css", required: false)
+</head>
+<body>
+    <div class="main-container" id="main-container">
+        <div class="main-container-inner">
+            <div class="main-content1">
+                @RenderSection("operations", false)
+                <div class="page-content" style="">
+                    <div class="page-header">
+                        @if (!string.IsNullOrEmpty(ViewBag.SysTitle))
+                        {
+                            <h4 style="padding: 0px; margin: 6px 0px 6px 6px; ">
+                                @ViewBag.SysTitle
+                                <small>@RenderSection("prompt", false)</small>
+                            </h4>
+                        }
+                        <h4 style="padding: 0px; margin: 0px 0px 0px 0px;">
+                            @RenderSection("viewlist", false)
+                        </h4>
+                    </div>
+                    <div class="col-xs-12" id="panelbody" style="padding: 0px 0px; ">
+                        @RenderSection("search_panel", false)
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+    <script src="~/Content/plugin/layer/layer.js"></script>
+    @System.Web.Optimization.Scripts.Render("~/_layout/js")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

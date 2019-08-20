@@ -1,0 +1,44 @@
+﻿ body {
+            padding-bottom: 0;
+            background-color: white !important;
+            font-family: 'Open Sans';
+            font-size: 13px;
+        }
+
+        .spinner-preview {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .dropdown-preview {
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+            .dropdown-preview > .dropdown-menu {
+                display: block;
+                position: static;
+                margin-bottom: 5px;
+            }
+
+        .curr {
+            border: #23B30C solid 2px !important;
+        }
+
+        #columns_container th:hover {
+            background-color: #B1D6F0 !important;
+            cursor: pointer;
+        }
+
+        #columns_container th {
+            padding: 6px 9px 2px 9px;
+            font-weight: 100;
+            color: #333333;
+        }
+
+        #toleft:hover, #toright:hover {
+            background-color: #D7EBF9;
+            cursor: pointer;
+        }

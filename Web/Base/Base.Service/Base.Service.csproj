@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{480A0212-40AD-4721-89EC-3653C119C48A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Base.Service</RootNamespace>
+    <AssemblyName>Base.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aliyun.OSS, Version=2.9.0.0, Culture=neutral, PublicKeyToken=0ad4175f0dac0b9b, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aliyun.OSS.SDK.2.9.0\lib\Aliyun.OSS.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Qiniu">
+      <HintPath>..\..\Libs\OSS\Qiniu.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessRightSetting\DataConfigService.cs" />
+    <Compile Include="AccessRightSetting\OperationConfigService.cs" />
+    <Compile Include="Approval\ApprovalDetailService.cs" />
+    <Compile Include="Approval\ApprovalService.cs" />
+    <Compile Include="Attachment\AttachmentService.cs" />
+    <Compile Include="BaseService.cs" />
+    <Compile Include="Department\DepartmentService.cs" />
+    <Compile Include="Category\CategoryService.cs" />
+    <Compile Include="Data\DataService.cs" />
+    <Compile Include="Dictionary\DictionaryService.cs" />
+    <Compile Include="Images\ImagesService.cs" />
+    <Compile Include="Job\JobService.cs" />
+    <Compile Include="Job\JobUsersService.cs" />
+    <Compile Include="Menu\MenuAreaService.cs" />
+    <Compile Include="Menu\MenuService.cs" />
+    <Compile Include="Operation\OperationService.cs" />
+    <Compile Include="OrgManage\UserService.cs" />
+    <Compile Include="Panel\PanelService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\ReportParametersService.cs" />
+    <Compile Include="Report\ReportService.cs" />
+    <Compile Include="Role\RoleService.cs" />
+    <Compile Include="Role\UserAndRoleService.cs" />
+    <Compile Include="Schedule\ScheduleService.cs" />
+    <Compile Include="SMS\JZSMSService.cs" />
+    <Compile Include="SMS\SMSConfigService.cs" />
+    <Compile Include="SysConfig\SiteConfigService.cs" />
+    <Compile Include="SysConfig\SysConfigService.cs" />
+    <Compile Include="SystemSet\CommonService.cs" />
+    <Compile Include="SystemSet\DictionaryService.cs" />
+    <Compile Include="SystemSet\EntityService.cs" />
+    <Compile Include="SystemSet\FieldService.cs" />
+    <Compile Include="SystemSet\FormDataSourceService.cs" />
+    <Compile Include="SystemSet\FormService.cs" />
+    <Compile Include="SystemSet\ListDataSourceService.cs" />
+    <Compile Include="SystemSet\LookUpService.cs" />
+    <Compile Include="SystemSet\SearchService.cs" />
+    <Compile Include="SystemSet\SystemSetService.cs" />
+    <Compile Include="SystemSet\ViewService.cs" />
+    <Compile Include="Tag\TagService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ORM\ORM.csproj">
+      <Project>{d7218ea6-53b0-47b6-bd7b-90f74cbade64}</Project>
+      <Name>ORM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Utility\Utility.csproj">
+      <Project>{92e75030-0341-495e-9971-6da5d2a3c681}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Base.IService\Base.IService.csproj">
+      <Project>{ddc8457d-07f7-4fb8-8a09-2de8ed54d7a1}</Project>
+      <Name>Base.IService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Base.Model\Base.Model.csproj">
+      <Project>{5ed8223e-1443-4c98-b065-83f282a801d8}</Project>
+      <Name>Base.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

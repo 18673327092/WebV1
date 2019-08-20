@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{51B3E8D0-29AC-423E-A4EB-F77EE3B51817}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JDYD.Service</RootNamespace>
+    <AssemblyName>JDYD.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomerService.cs" />
+    <Compile Include="DpMentService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Base\Base.IService\Base.IService.csproj">
+      <Project>{ddc8457d-07f7-4fb8-8a09-2de8ed54d7a1}</Project>
+      <Name>Base.IService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Base\Base.Model\Base.Model.csproj">
+      <Project>{5ed8223e-1443-4c98-b065-83f282a801d8}</Project>
+      <Name>Base.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Base\Base.Service\Base.Service.csproj">
+      <Project>{480a0212-40ad-4721-89ec-3653c119c48a}</Project>
+      <Name>Base.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\ORM\ORM.csproj">
+      <Project>{d7218ea6-53b0-47b6-bd7b-90f74cbade64}</Project>
+      <Name>ORM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Utility\Utility.csproj">
+      <Project>{92e75030-0341-495e-9971-6da5d2a3c681}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Web.Utility\Web.Utility.csproj">
+      <Project>{bd7bfe4e-8536-4eed-ab2d-00314baea9ec}</Project>
+      <Name>Web.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Library\JDYD.IService\JDYD.IService.csproj">
+      <Project>{2a4dff90-f14a-4feb-bc97-0e9e3228f8b5}</Project>
+      <Name>JDYD.IService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JDYD.Model\JDYD.Model.csproj">
+      <Project>{0cd1d26e-f5bc-4dbc-ba6b-4dbc420ed018}</Project>
+      <Name>JDYD.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

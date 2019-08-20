@@ -1,0 +1,111 @@
+﻿<style type="text/css">
+    .panel {
+        font-size: 13px;
+    }
+
+    .panel_tree {
+        width: 190px;
+        border: 0px;
+        float: left;
+        padding: 0px;
+    }
+
+    .panel_title {
+        margin: 6px 0px 6px 0px;
+        display: inline-block;
+    }
+
+    .panel_body {
+        padding: 0px;
+        border: solid 1px #ccc;
+    }
+
+    .panel_btn {
+        float: left;
+        padding: 0px;
+        text-align: center;
+        margin: 106px 10px 26px 10px;
+    }
+
+    .tree_li {
+        padding: 2px 0px 2px 4px;
+        margin: 2px;
+        cursor: pointer;
+    }
+
+    .li_curr {
+        background-color: #C4DDFF;
+        border-bottom: 1px solid;
+    }
+
+    li {
+        list-style: none;
+    }
+</style>
+<div class="col-xs-12 ">
+    <div class="panel panel-default col-xs-5 panel_tree">
+        <span class="panel_title">可用值</span>
+        <div class="panel-body" style=" padding: 0px; border: solid 1px #ccc;">
+            <div style="height: 234px; overflow-y: auto; overflow-x: hidden; ">
+                <ul style=" margin: 0px;" id="ul_left">
+                    @{
+                        var LeftDictionary = ViewBag.LeftDictionary as List<CRM.Model.Sys.Sys_Dictionary>;
+                        int i = 0;
+                        foreach (var item in LeftDictionary)
+                        {
+
+                            <li class="tree_li @(i++ == 0 ? "li_curr" : "")" data-value="@item.Value">@item.Name</li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="panel_btn">
+        <input type="button" value=">>" id="btn_right" style="width: 45px; border: solid 1px #666666 !important; " />
+        <br />
+        <input type="button" value="<<" id="btn_left" style="margin-top: 12px; width: 45px; border: solid 1px #666666 !important;" />
+    </div>
+    <div class="panel panel-default  col-xs-5 panel_tree">
+        <span class="panel_title">已选值</span>
+        <div class="panel-body panel_body">
+            <div id="panel-right-tree" style="height: 234px; overflow-y: auto; overflow-x: hidden; ">
+                <ul style=" margin: 0px;" id="ul_right">
+                    @{
+                        var RightDictionary = ViewBag.RightDictionary as List<CRM.Model.Sys.Sys_Dictionary>;
+                        foreach (var item in RightDictionary)
+                        {
+                            <li class="tree_li" data-value="@item.Value">@item.Name</li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(".tree_li").on("click", function () {
+        $(this).addClass("li_curr").siblings().removeClass("li_curr");
+    })
+
+    $(".tree_li").on("dblclick", function () {
+        var ulid = $(this).parent().attr("id");
+        $(this).removeClass("li_curr");
+        if (ulid == "ul_left") {
+            $("#ul_right").append($(this));
+        } else {
+            $("#ul_left").append($(this));
+        }
+    });
+
+    $("#btn_right").on("click", function () {
+        $("#ul_right").append($("#ul_left").find("li[class*=li_curr]").removeClass("li_curr"));
+    })
+
+    $("#btn_left").on("click", function () {
+        $("#ul_left").append($("#ul_right").find("li[class*=li_curr]").removeClass("li_curr"));
+    })
+
+</script>

@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "添加列";
+    Layout = null;
+    CRM.Model.Sys.Sys_Entity Entity = ViewBag.Entity as CRM.Model.Sys.Sys_Entity;
+    List<CRM.Model.Sys.Model.FKEntityModel> FkEntityList = (List<CRM.Model.Sys.Model.FKEntityModel>)ViewBag.FkEntityList;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="keywords" content="CRM" />
+    <meta name="description" content="CRM" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 基本样式 -->
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/Content/plugin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/kendo/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/kendo/styles/kendo.bootstrap.min.css" />
+    @System.Web.Optimization.Styles.Render("~/addcolumns/css")
+    <script src="~/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+</head>
+<body>
+    <table style="margin: 19px 20px 0px 19px;">
+        <tr>
+            <td>
+                <div style=" margin: 4px 26px 0px 0px; float: left;">记录类型 </div>
+                <div style="margin-bottom:10px;">
+                    <select id="eid" onchange="addcolumns.search()" class="form-control selectcontrl" style="width: 200px; padding: 2px 3px 2px 1px; font-size: 13px; height: 26px; ">
+                        <option value="@Entity.ID" data-name="@Entity.Name">@Entity.ShowName</option>
+                        @{
+                            foreach (var fk in FkEntityList)
+                            {
+                                <option value="@fk.RelationEntityID" data-name="@fk.Value" data-onsql="@fk.OnSql" data-jointablename="@fk.JoinTableName" data-title="@fk.Title">@fk.ShowName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="grid" style="height:200px;"></div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+<input type="hidden" id="ceid" value="@ViewBag.EntityID" />
+<input type="hidden" id="fields" value="@ViewBag.FieldList" />
+<input type="hidden" id="fkentitys" value="@ViewBag.FkEntityList" />
+<script src="~/Content/base/js/pagegrid.js"></script>
+@System.Web.Optimization.Scripts.Render("~/addcolumns/js")

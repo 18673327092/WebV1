@@ -1,0 +1,32 @@
+﻿    textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+            font-size: 13px !important;
+        }
+
+        body {
+            padding-bottom: 0;
+            background-color: white !important;
+        }
+
+        #select_value > span {
+            cursor: pointer;
+            display: inline-block;
+            padding: 3px 0px;
+            margin: 2px;
+        }
+
+        .select_value_curr {
+            background-color: #C4DDFF;
+        }
+
+        .layui-tab-content {
+            padding: 10px 0px 0px 0px;
+            font-size: 12px;
+        }
+
+        .k-pager-sizes {
+            display: none !important;
+        }
+
+        .k-grid tr td {
+            padding: 4px 2px 1px 8px !important;
+        }

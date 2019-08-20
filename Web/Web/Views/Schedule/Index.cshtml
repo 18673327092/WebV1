@@ -1,0 +1,322 @@
+﻿@{
+    ViewBag.Title = "schedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css{
+    <link href="~/Content/plugin/assets/css/fullcalendar.css" rel="stylesheet" />
+}
+<div id="calendar"></div>
+
+@section scripts{
+    <script src="~/Content/assets/js/fullcalendar.min.js"></script>
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    @*<script src="~/Content/assets/js/typeahead-bs2.min.js"></script>*@
+
+    <!-- page specific plugin scripts -->
+
+    <script src="~/Content/plugin/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <!--Touch Punch在移动设备上面增加jQuery UI的触摸支持-->
+    <script src="~/Content/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <!--日程插件-->
+    <script src="~/Content/plugin/assets/js/fullcalendar.min.js"></script>
+    <!--弹框-->
+    <script src="~/Content/plugin/assets/js/bootbox.min.js"></script>
+    <script src="~/Content/plugin/laydate/laydate.js"></script>
+    <!-- ace scripts -->
+    <script type="text/javascript">
+        jQuery(function ($) {
+
+            /* initialize the external events
+                -----------------------------------------------------------------*/
+            $('#external-events div.external-event').each(function () {
+                // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+                // it doesn't need to have a start or end
+                var eventObject = {
+                    title: $.trim($(this).text()) // use the element's text as the event title
+                };
+
+                // store the Event Object in the DOM element so we can get to it later
+                $(this).data('eventObject', eventObject);
+
+                // make the event draggable using jQuery UI
+                $(this).draggable({
+                    zIndex: 999,
+                    revert: true,      // will cause the event to go back to its
+                    revertDuration: 0  //  original position after the drag
+                });
+            });
+
+
+
+
+            /* initialize the calendar
+            -----------------------------------------------------------------*/
+
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+            var calendar = $('#calendar').fullCalendar({
+                height: 630,
+                buttonText: {
+                    today: '今天',
+                    month: '月',
+                    week: '周',
+                    day: '日'
+                },
+                allDayText: "全天",
+                timeFormat: { '': 'H:mm{-H:mm}' },
+                weekMode: "variable",
+                columnFormat: {
+                    month: 'dddd',
+                    week: 'dddd M-d',
+                    day: 'dddd M-d'
+                },
+                titleFormat: {
+                    month: 'yyyy年 MMMM月',
+                    week: "[yyyy年] MMMM月d日 { '&#8212;' [yyyy年] MMMM月d日}",
+                    day: 'yyyy年 MMMM月d日 dddd'
+                },
+                monthNames: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                dayNames: ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                events: function (start, end, callback) {
+                    //var date = this.getDate().format('YYYY-MM');
+                    $.getJSON('/Schedule/_AjaxList', { starttime: start.Format("yyyy-MM-dd HH:mm:ss"), endtime: event.end == null ? null : event.end.Format("yyyy-MM-dd HH:mm:ss") }, function (data) {
+                        if (data.Success) {
+                            var events = [];
+                            $.each(data.List, function (m, n) {
+                                events.push({
+                                    id: n.ID,
+                                    title: n.Remark,
+                                    allDay: false,
+                                    start: n.starttime,
+                                    end: n.endtime,
+                                });
+                                console.log(JSON.stringify(events))
+                            });
+                            callback(events);
+                        }
+                    });
+                },
+                editable: true,
+                //拖动事件
+                eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
+                    debugger
+                    _Save(event.id, event.start.Format("yyyy-MM-dd HH:mm:ss"), event.end == null ? null : event.end.Format("yyyy-MM-dd HH:mm:ss"), event.title,
+                                       function (data) {
+                                           if (!data.Success) {
+                                               revertFunc();
+                                           }
+                                       });
+                },
+                //改变大小
+                eventResize: function (event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
+                    debugger
+                    _Save(event.id, event.start.Format("yyyy-MM-dd HH:mm:ss"), event.end == null ? null : event.end.Format("yyyy-MM-dd HH:mm:ss"), event.title,
+                                       function (data) {
+                                           if (!data.Success) {
+                                               revertFunc();
+                                           }
+                                       });
+                },
+
+                //droppable: false, // this allows things to be dropped onto the calendar !!!
+                //drop: function (date, allDay) { // this function is called when something is dropped
+
+                //    // retrieve the dropped element's stored Event Object
+                //    var originalEventObject = $(this).data('eventObject');
+                //    var $extraEventClass = $(this).attr('data-class');
+
+
+                //    // we need to copy it, so that multiple events don't have a reference to the same object
+                //    var copiedEventObject = $.extend({}, originalEventObject);
+
+                //    // assign it the date that was reported
+                //    copiedEventObject.start = date;
+                //    copiedEventObject.allDay = allDay;
+                //    if ($extraEventClass) copiedEventObject['className'] = [$extraEventClass];
+
+                //    // render the event on the calendar
+                //    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+                //    $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+                //    // is the "remove after drop" checkbox checked?
+                //    if ($('#drop-remove').is(':checked')) {
+                //        // if so, remove the element from the "Draggable Events" list
+                //        $(this).remove();
+                //    }
+
+                //}
+                //,
+                selectable: true,
+                selectHelper: true,
+                dayClick: function (date, allDay, jsEvent, view) {
+                    // bootbox.prompt("新日程:", function (title) {
+                    //     if (title !== null && title != "") {
+                    //         calendar.fullCalendar('renderEvent',
+                    //             {
+                    //                 title: title,
+                    //                 start: date,
+                    //                 //end: end,
+                    //                 allDay: allDay
+                    //             },
+                    //             true // make the event "stick"
+                    //         );
+                    //     }
+                    // });
+                    //calendar.fullCalendar('unselect');
+                    //// 此处可以进行弹窗、后台通信等处理
+                    //// 本例仅在日历中添加一个新日程
+                    //calendar.fullCalendar('renderEvent',
+                    // {
+                    //     title: '日程' + new Date().getTime(),
+                    //     start: date,
+                    //     allDay: allDay
+                    // }
+                    //);
+                },
+                select: function (start, end, allDay) {
+                    var form = $("<form class='bootbox-form'></form>");
+                    form.append('内容：<input class="bootbox-input form-control" id="title" autocomplete="off" value="" type="text">');
+                    form.append('<br/>开始时间：<input onclick="laydate({istime: true, format: \'YYYY-MM-DD hh:mm:ss\'}) " class="form-control single-line laydate-icon time" id="starttime"  value="' + start.Format("yyyy-MM-dd HH:mm:ss") + '">');
+                    form.append('<br/>结束时间：<input onclick="laydate({istime: true, format: \'YYYY-MM-DD hh:mm:ss\'}) " class="form-control single-line laydate-icon time" id="endtime"  value="' + (end == null ? "" : end.Format("yyyy-MM-dd HH:mm:ss")) + '">');
+
+                    var div = bootbox.dialog({
+                        title: "添加新日程",
+                        message: form,
+                        buttons: {
+                            "保存": {
+                                "label": "<i class='icon-ok'></i> 保存",
+                                "className": "btn btn-primary",
+                                "callback": function () {
+                                    var title = form.find("#title").val();
+                                    var start = form.find("#starttime").val();
+                                    var end = form.find("#endtime").val();
+                                    if (title !== null && title != "") {
+                                        _Save(0, start, end, title,
+                                            function (data) {
+                                                if (data.Success) {
+                                                    calendar.fullCalendar('renderEvent',
+                                                     {
+                                                         title: title,
+                                                         start: start,
+                                                         end: end,
+                                                         allDay: false
+                                                     }, true // make the event "stick"
+                                                    );
+                                                }
+                                            });
+                                        div.modal("hide");
+                                        return false;
+                                    }
+                                }
+                            },
+                            "关闭": {
+                                "label": "<i class='icon-remove'></i> 关闭",
+                                "className": "btn"
+                            }
+                        }
+                    });
+                    calendar.fullCalendar('unselect');
+                    //bootbox.prompt("新日程:", function (title) {
+                    //    if (title !== null && title != "") {
+                    //        _Save(0, start.Format("yyyy-MM-dd HH:mm:ss"), end.Format("yyyy-MM-dd HH:mm:ss"), title,
+                    //            function (data) {
+                    //                if (data.Success) {
+                    //                    calendar.fullCalendar('renderEvent',
+                    //                        {
+                    //                            title: title,
+                    //                            start: start,
+                    //                            end: end,
+                    //                            allDay: allDay
+                    //                        },
+                    //                        true // make the event "stick"
+                    //                    );
+                    //                }
+
+                    //            });
+                    //    }
+                    //});
+
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    var form = $("<form class='bootbox-form'></form>");
+                    form.append('内容：<input class="bootbox-input form-control" id="title" autocomplete="off" value="' + calEvent.title + '" type="text">');
+                    form.append('<br/>开始时间：<input onclick="laydate({istime: true, format: \'YYYY-MM-DD hh:mm:ss\'}) " class="form-control single-line laydate-icon time" id="starttime"  value="' + calEvent.start.Format("yyyy-MM-dd HH:mm:ss") + '">');
+                    form.append('<br/>结束时间：<input onclick="laydate({istime: true, format: \'YYYY-MM-DD hh:mm:ss\'}) " class="form-control single-line laydate-icon time" id="endtime"  value="' + (calEvent.end == null ? calEvent.start.Format("yyyy-MM-dd HH:mm:ss") : calEvent.end.Format("yyyy-MM-dd HH:mm:ss")) + '">');
+                    var div = bootbox.dialog({
+                        title: "编辑日程",
+                        message: form,
+                        buttons: {
+                            "保存": {
+                                "label": "<i class='icon-ok'></i> 保存",
+                                "className": "btn btn-primary",
+                                "callback": function () {
+                                    calEvent.title = form.find("#title").val();
+                                    calEvent.start = form.find("#starttime").val();
+                                    calEvent.end = form.find("#endtime").val();
+                                    _Save(calEvent.id, calEvent.start, calEvent.end, calEvent.title,
+                                        function (data) {
+                                            if (data.Success) {
+                                                calendar.fullCalendar('updateEvent', calEvent);
+                                            }
+                                        });
+                                    div.modal("hide");
+                                    return false;
+                                }
+                            },
+                            "删除日程": {
+                                "label": "<i class='icon-trash'></i> 删除",
+                                "className": "btn btn-danger",
+                                "callback": function () {
+                                    var ids = [];
+                                    ids.push(calEvent.id);
+                                    $.post("/Schedule/_Delete/", { ids: JSON.stringify(ids) }, function (data) {
+                                        if (data.Success) {
+                                            calendar.fullCalendar('removeEvents', function (ev) {
+                                                return (ev._id == calEvent._id);
+                                            })
+                                        }
+                                    }, "json")
+
+                                }
+                            },
+                            "关闭": {
+                                "label": "<i class='icon-remove'></i> 关闭",
+                                "className": "btn"
+                            }
+                        }
+                    });
+
+
+
+                    //console.log(calEvent.id);
+                    //console.log(jsEvent);
+                    //console.log(view);
+
+                    // change the border color just for fun
+                    //$(this).css('border-color', 'red');
+
+                }
+            });
+
+            function _Save(id, start, end, title, callback) {
+                $.post("/Schedule/_Save", { ID: id, starttime: start, endtime: end, Remark: title }, function (data) {
+                    if (typeof callback == "function") {
+                        callback(data);
+                    }
+                }, "json");
+            }
+
+        })
+
+
+    </script>
+}

@@ -1,0 +1,153 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutListWindow.cshtml";
+}
+@section css{
+    @Html.Partial("_Layout-list-css")
+    <link href="~/Content/plugin/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/bootstrap/css/bootstrap_select.css" rel="stylesheet" />
+    <style type="text/css">
+        .k-grid-content tr td {
+        }
+
+        td .btn {
+            height: 10px;
+            line-height: 10px;
+            /* margin: -4px; */
+            padding: 8px;
+        }
+
+        .row {
+            margin-right: -5px;
+        }
+
+        .page-header {
+            margin: 0 0 5px;
+            border-bottom: 1px dotted #e2e2e2;
+            padding-bottom: 0px;
+            padding-top: 0px;
+        }
+    </style>
+}
+<div class="page-header">
+    <h4 style="padding: 0px; margin: 6px 0px 6px 6px; ">
+        属性基础数据维护
+    </h4>
+</div>
+
+<!--列表容器-->
+<div id="search-panel" class="search-panel">
+    <div class="search-control ">
+        <input class="SearchField" id="EntityName" style="line-height: 26px; " placeholder="功能模块">
+    </div>
+    <div class="search-control">
+        <input class="SearchField" id="FieldTitle" style="line-height: 26px; " placeholder="属性">
+    </div>
+    <div class="search-control">
+        <input class="SearchField" id="ValueList" style="line-height: 26px; " placeholder="可选值">
+    </div>
+    <button id="btnSearch" class="search-button btn btn-primary">搜 索</button>
+    <button id="btn_ClearSearch" class="search-button btn btn-file">重 置</button>
+</div>
+<input type="hidden" id="issearch" value="false" />
+<div id="grid"></div>
+@section scripts{
+    <script src="~/Content/plugin/page/js/gridbase.js"></script>
+    <script src="~/Content/plugin/kendo/js/cultures/kendo.culture.zh-CN.min.js"></script>
+    <script src="~/Content/plugin/kendo/js/messages/kendo.messages.zh-CN.min.js"></script>
+    <script type="text/javascript">
+        var _grid = {
+            primary: "FieldID",
+            columns: [
+                {
+                    field: "FieldID",
+                    title: "ID",
+                    width: 50,
+                },
+                 {
+                     field: "EntityName",
+                     title: "功能模块",
+                     width: 150,
+                 },
+                {
+                    field: "FieldTitle",
+                    title: "属性",
+                    width: 150,
+                },
+                {
+                    field: "ValueList",
+                    title: "可选值",
+                }, {
+                    field: "FieldID",
+                    title: "操作",
+                    template: function (data) {
+                        return '<button class="btn btn-success" data-id="' + data.FieldID + '" data-entityname="' + data.EntityName + '" data-title="' + data.FieldTitle + '" onclick="OpForm(this)">编辑</button>';
+                    },
+                },
+            ],
+            ischeckbox: false,
+            searchcontrols: [{ field: "EntityName" }, { field: "issearch" }, { field: "FieldTitle" }, { field: "ValueList" }],
+            paramsdata: {},
+            sortable: true,
+            resizable: true,
+            pageSize: 15,
+            click: function (data) {
+
+            },
+            dbclick: function (data) {
+
+            }
+        }
+
+        function OpForm(e) {
+            var id = $(e).data("id")
+            var entityname = $(e).data("entityname")
+            var title = $(e).data("title")
+            //dlg.openframe({
+            //    offset: ['80px'],
+            //    title: "编辑属性可选值",
+            //    content: "/Dictionary/Form/" + id,
+            //    area: ['600px', '500px;']
+            //})
+            dlg.openframe({
+                offset: ["2px"],
+                area: ['620px', '90%'], //宽高
+                title: "编辑 【" + entityname + "－" + title + "】 可选值",
+                content: "/Dictionary/Form/" + id,
+            })
+            //dlg.openPageHtml({
+            //    title: "编辑 【" +entityname+"－"+ title + "】 可选值",
+            //    area: ['620px', '620px'], //宽高
+            //    url: "/Dictionary/Form/" + id,
+            //    area: ['600px', '500px;']
+            //}, function () {
+            //    $("#form-field").submit();
+            //})
+        }
+
+        var grid = new pagegride(_grid);
+
+        $("#btnSearch").click(function () {
+            grid.refresh();
+        });
+    
+        $("#btn_ClearSearch").click(function () {
+            $.each($("#search-panel").find(".SearchField"), function () {
+                $(this).val("");
+            });
+            $("#search-panel").find(".search-span").each(function () {
+                $(this).text($(this).data("title"));
+            });
+            $("#search-panel").find(".search-icon").each(function () {
+                $(this).data("value", "");
+            });
+            grid.refresh();
+        });
+       autogridsize();
+        $(window).resize(function () { autogridsize(); autogridsize(); });
+        function autogridsize() {
+            var _this = this;
+            $("#grid").height($(window).height() - 80);
+            grid.refresh();
+        }
+    </script>
+}

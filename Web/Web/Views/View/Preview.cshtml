@@ -1,0 +1,29 @@
+﻿@*@*@*@{
+    Layout = "~/Views/Shared/_LayoutListWindow.cshtml";
+    int entityId = Convert.ToInt32(ViewBag.entityId);
+}
+@section css{
+    <link href="~/Content/kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" />
+    <link href="~/Content/grid.css" rel="stylesheet" />
+}
+<input type="hidden" id="GridFields" value="@ViewBag.GridFields" />
+@section scripts{
+    <script src="~/Content/layui/build/layui.js"></script>
+    <script src="~/Content/kendo/js/angular.min.js"></script>
+    <script src="~/Content/kendo/js/kendo.all.min.js"></script>
+    <script src="~/Content/kendo/content/shared/js/console.js"></script>
+    <script src="~/Content/tool/pagegrid.js"></script>
+    <script src="~/Content/plugins/icheck-1.x/icheck.min.js"></script>
+
+    <script type="text/javascript">
+        var pg = new pagegride({
+            url: "/View/_PreviewList",
+            ischeckbox:false,
+            paramsdata: { key: request("key") },
+            columns: JSON.parse($("#GridFields").val())
+        });
+    </script>
+}
+<div id="grid"></div>*@*@*@

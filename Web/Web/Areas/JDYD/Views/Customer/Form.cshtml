@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/Template/_LayoutForm.cshtml";
+}
+@section css{
+    <style>
+        .select_fl{
+            float:left;
+            width:120px !important;
+        }
+    </style>
+    }
+@section Quarry{
+    <td width="100" align="right" style="">
+        <span class="form_label">
+            客户来源
+        </span>
+    </td>
+    <td style=" border: 0px;padding: 0px;" colspan="5">
+        <div class="form_content">
+            @Html.FormControl(new FormControllerModel() { FieldID = 11724, FormField = new Base.Model.Sys.Model.FormFieldModel() { }, ID = 0, ClassName = "select_fl" })
+            @Html.FormCustomizeControl(new FormControllerModel() { FieldID = 11763, FormField = new Base.Model.Sys.Model.FormFieldModel() { }, ID = 0, ClassName = "select_fl" })
+            <span style="float:left;margin:6px">人员:</span>
+            @Html.FormCustomizeControl(new FormControllerModel() { FieldID = 11725, FormField = new Base.Model.Sys.Model.FormFieldModel() { }, ID = 0, ClassName = "select_fl" })
+        </div>
+    </td>
+}
+@section ProvinceID{
+
+    <td width="100" align="right" style="">
+        <span class="form_label">
+            所在地区
+        </span>
+    </td>
+    <td style=" border: 0px;padding: 0px;">
+        <div class="form_content" style="">
+            <select id="Sel_ProvinceID" class="form-tag filed customer_field col-md-6 col-xs-6 " style="float:left; width: 120px;">
+                <option value="">省/直辖市</option>
+            </select>
+            <select id="Sel_CityID" class="form-tag filed customer_field col-md-6 col-xs-6 " style=" float: left; width: 120px; ">
+                <option value="">城市/行政区</option>
+            </select>
+        </div>
+    </td>
+    <td></td>
+}
+@section scripts{
+    <script src="~/Content/base/js/area.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            area.init({
+                ProvinceFieldName: "ProvinceID",
+                CityFieldName: "CityID",
+                AreaFieldName: "AreaID",
+            });
+            layoutform.fn_beforeSend = function () {
+
+            }
+        });
+    </script>
+}

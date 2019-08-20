@@ -1,0 +1,293 @@
+﻿@{
+    ViewBag.Title = "数据导入";
+    var PATH = string.IsNullOrEmpty(ViewBag.AreaName) ? "/" + ViewBag.Controller + "/" : "/" + ViewBag.AreaName + "/" + ViewBag.Controller + "/";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="keywords" content="CRM" />
+    <meta name="description" content="CRM" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+            font-size: 13px !important;
+        }
+
+        body {
+            padding-bottom: 0;
+            background-color: white !important;
+        }
+
+        #select_value > span {
+            cursor: pointer;
+            display: inline-block;
+            padding: 3px 0px;
+            margin: 2px;
+        }
+
+        .select_value_curr {
+            background-color: #C4DDFF;
+        }
+
+        .layui-tab-content {
+            padding: 10px 0px 0px 0px;
+            font-size: 12px;
+        }
+
+        .k-pager-sizes {
+            display: none !important;
+        }
+
+        .k-grid tr td {
+            padding: 4px 2px 1px 8px !important;
+        }
+
+        .file-thumb-progress .progress, .file-thumb-progress .progress-bar {
+            height: 17px !important;
+        }
+
+        .fileinput-upload-button {
+            text-decoration: none !important;
+            position: absolute !important;
+            top: 16px !important;
+            left: 139px !important;
+        }
+
+        .btn-file {
+            text-decoration: none;
+            position: absolute !important;
+            top: 16px !important;
+            left: 20px !important;
+        }
+
+        .k-grid .k-edit-cell {
+            padding: 0 .3em;
+            white-space: nowrap;
+            padding: 0px !important;
+        }
+
+        .k-grid-add {
+            /*position: absolute !important;
+            top: -54px !important;
+            left: 146px !important;
+            height: 35px !important;
+            padding-top: 5px !important;
+            font-size: 14px !important;*/
+        }
+
+        .k-icon k-add {
+            /*margin-top: -1px !important;*/
+        }
+    </style>
+    <!-- 基本样式 -->
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="~/Content/plugin/assets/css/ace-skins.min.css" />
+    <link href="~/Content/plugin/kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/page/css/grid.css" rel="stylesheet" />
+    <link href="~/Content/plugin/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+    <link href="/Content/plugin/bootstrap-fileinput/prod/all-krajee.css" rel="stylesheet" />
+
+</head>
+<body style="">
+    <div class="page-content">
+        <div style=" margin-bottom: 15px;">
+            <div style="float:left">
+                <span id="UploadButtons" style="display: none">
+                    <input class="btn btn-default" id="btn-back" style="" value="返回" type="button">
+                    <input class="btn btn-primary" id="save" style="" onclick="Save()" value="保存数据" type="button">
+                    <h5 style="  position: absolute; top: 16px; left: 172px;">
+                        列表中为导入的数据，支持直接在列表中进行再次进行编辑，点击【<b onclick="Save()">保存数据</b>】按钮，完成数据导入操作
+                    </h5>
+                </span>
+            </div>
+            <div style="float:right">
+                <input type="button" onclick="DownLoadCsv()" class="btn btn-link" value="下载导入模板" />
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="UploadPanel" style="margin-top: 10px; margin-right: 12px;">
+            @using (@Html.BeginForm("ImportModel", "Common", FormMethod.Post, new { id = "fileForm", enctype = "multipart/form-data" }))
+            {
+                <input name="ImportFile" multiple id="projectfile" data-value="" type="file">
+            }
+        </div>
+        <div id="UploadGrid" class="col-xs-12" style="margin-left: -14px; margin-top: 10px;display:none; ">
+            <input type="hidden" id="gridfields" value="@ViewBag.GridFields" />
+            <div id="dicgrid"></div>
+            <div class="progress progress-striped" id="importprogress" data-percent="0%" style="display:none;margin-top: 10px;  margin-bottom: 0px !important;">
+                <div class="progress-bar progress-bar-success" id="importprogress-success" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="eid" value="@ViewBag.EntityID" />
+    <input type="hidden" id="UserID" value="@ViewBag.UserID" />
+    <input type="hidden" id="DepartmentID" value="@ViewBag.DepartmentID" />
+    <input type="hidden" id="UserID" value="@ViewBag.UserID" />
+    <iframe id="ifile" style="display: none"></iframe>
+    <script src="~/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+    <script src="~/Content/plugin/page/js/grid.js"></script>
+    <script src="~/Content/@CRM.Utility.ApplicationContext.AppSetting.WEB_SITE_STATIC_RESOURCE_PATH/js/pagegrid.js"></script>
+    <script src="~/Content/plugin/layer/layer.js"></script>
+    <script src="~/Content/plugin/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="~/Content/plugin/bootstrap-fileinput/js/fileinput_locale_zh.js"></script>
+    <script src="~/Content/plugin/bootstrap-fileinput/js/jquery-form.js"></script>
+    <script src="~/Content/plugin/page/js/pagedialog.js"></script>
+    <script type="text/javascript">
+        function DownLoadCsv() {
+            $('#ifile').attr("src", "/Common/ExportImportModel?eid=" + $("#eid").val());
+        }
+        $(function () {
+            $("#btn-back").click(function () {
+                dlg.confirm("您的数据未保存，确定重新上传吗？", function () {
+                    $(".fileinput-remove").click();
+                    $("#UploadPanel").show();
+                    $("#UploadGrid").hide();
+                    $("#UploadButtons").hide();
+                })
+            });
+            $("#dicgrid").height($(window).height() - 122);
+        })
+
+        function GetFieldType(fieldname) {
+            var _columns = JSON.parse($("#gridfields").val());
+            var fieldType = "";
+            $.each(_columns, function (m, n) {
+                if (n.Name == fieldname) fieldType = n.fieldType;
+            });
+            return fieldType;
+        }
+
+        function GetListData() {
+            var $grid = $("#dicgrid");
+            var $th = $grid.find("thead>tr").find("th");
+            var fileds = [];
+            $.each($th, function (m, n) {
+                fileds.push(
+                    {
+                        m: m,
+                        field: $(n).data("field")
+                    });
+            });
+            var list = [];
+            $grid.find("tbody").find("tr").each(function (q, tr) {
+                var obj = {};
+                var $tds = $(tr).find("td");
+                $.each($tds, function (m, td) {
+                    $.each(fileds, function (a, b) {
+                        if (a == m && typeof b.field == "string") {
+                            obj[b.field] = $(td).text();
+                        }
+                    })
+                });
+                list.push(obj)
+            });
+            return list;
+        }
+
+
+
+        function Save() {
+            $("#importprogress").show();
+            var list = GetListData();
+            var pro = 100 / list.length;
+            var cpro = 0;
+            var successnum = 0;
+            var errornum = 0;
+            var num = 0;
+            var run = setInterval(function () {
+                $.ajax({
+                    url: "@(PATH)_Import",
+                    type: "POST",
+                    async: false,
+                    data: list[num],
+                    dataType: "JSON",
+                    success: function (data) {
+                        if (data.Success) {
+                            successnum++;
+                            cpro += parseInt(pro);
+                            if (list.length - 1 == num) cpro = 100;
+                            $("#importprogress").attr("data-percent", cpro + "%")
+                            $("#importprogress-success").css("width", cpro + "%")
+                        } else {
+                            errornum++;
+                            return false;
+                        }
+                    }
+                });
+                if (num == list.length - 1) {
+                    clearInterval(run);
+                    dlg.alert("数据导入完成，成功" + successnum + "条，失败" + errornum + "条", function () {
+                        history.go(0);
+                    });
+                }
+                num++;
+            }, 500);
+        }
+
+        // 文件上传框
+        $('#projectfile').fileinput({
+            uploadUrl: "/Common/UploadImportFile",
+            showUpload: true,
+            showRemove: false,
+            showCaption: false,
+            dropZoneEnabled: true,
+            language: 'zh',
+            //allowedPreviewTypes: ['image'],
+            //allowedFileExtensions: ['jpg', 'png', 'gif', "pdf"],
+            maxFileSize: 999999,
+            initialPreview: [],
+            initialPreviewConfig: []
+        }).on("fileuploaded", function (event, data) {
+            debugger
+            if (data.response) {
+                dlg.alert("文件上传成功，确认数据没问题后，请点击“保存数据”按钮！")
+                $("#UploadButtons").show();
+                $("#UploadPanel").hide();
+                $("#UploadGrid").show();
+                console.log(JSON.stringify(data))
+                $.post("/Common/SubmitImportFile", { filepath: data.response.data, eid: $("#eid").val() }, function (data) {
+                    var _columns = JSON.parse($("#gridfields").val());
+                    var columnsarr = [];
+                    $.each(_columns, function (m, n) {
+                        if (n.filterable != null)
+                            n.filterable = JSON.parse(n.filterable);
+                        columnsarr.push(n);
+                    })
+                    _columns.push({ command: [{ name: "destroy", text: "删除" }], title: "操作", width: "100px" });
+                    //console.log(JSON.stringify(columnsarr))
+                    //列表数据绑定
+                    kendo.culture("zh-CN");
+                    $("#dicgrid").kendoGrid({
+                        dataSource: data.List,
+                        toolbar: [
+                                 {
+                                     name: "create",
+                                     text: "新增一行"
+                                 }
+                        ],
+                        pageable: false,
+                        columns: _columns,
+                        resizable: true,
+                        editable: {
+                            // 设置删除时显示的确认信息
+                            confirmation: "您确定要进行删除操作吗？",
+                            createAt: "bottom",// 添加位置，默认是top：从第一行进行添加
+                            destroy: true,// 不允许删除
+                            // 设mode: "inline",置编辑形式为弹出框(popup)还是在列表中(inline)
+                            //                    template: kendo.template($("#editTemplate").html())//设置弹出框中加载的内容,设置此项mode必须是popup
+                        }
+                    });
+                }, "json")
+
+            }
+        });
+    </script>
+</body>
+</html>

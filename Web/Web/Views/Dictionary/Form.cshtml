@@ -1,0 +1,201 @@
+﻿@model CRM.Model.Sys.Model.DataConfigModel
+@{
+    Layout = "~/Views/Shared/_LayoutWindow.cshtml";
+}
+
+@section css{
+    <link href="~/Content/plugin/kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" />
+    <link href="~/Content/plugin/layui/build/css/layui.css" rel="stylesheet" />
+    <style>
+        * {
+            font-size: 13px;
+        }
+
+        .k-add, .k-delete {
+            display: none;
+        }
+
+        .control-label {
+            float: left;
+            text-align: right;
+            width: 14%;
+            margin-top: 5px;
+        }
+
+        .control-div {
+            width: 86%;
+            float: right;
+        }
+
+            .control-div input[type=text] {
+                padding: 0px 0px 0px 8px;
+                height: 32px;
+            }
+
+            .control-div select {
+                font-size: 13px;
+                height: 32px;
+            }
+
+        .k-grouping-header, .k-grid-toolbar {
+            margin: 0;
+            padding: 0;
+            cursor: default;
+        }
+
+
+
+        .k-grid .k-button {
+            margin: 0px 0;
+            font-size: 12px;
+        }
+
+        .breadcrumbs {
+            display: none;
+        }
+    </style>
+}
+
+@using (Html.BeginForm("Save", "Dictionary", FormMethod.Post, new { id = "form-submit", enctype = "multipart/form-data" }))
+{
+    <input type="hidden" name="ValueList" id="hid_Dictionary" value="@ViewBag.DictionaryList" />
+    <input type="hidden" name="FieldID" value="@ViewBag.FieldID" />
+ <!--选项集-->
+    <div class="form-group">
+        <div id="gridSelect1" style="margin: 10px">
+
+        </div>
+    </div>
+    <div style="clear:both"></div>
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-3 col-md-9">
+
+            <a class="btn btn-primary" style="width:80px;" id="btn_submit">
+                <i class="icon-ok bigger-110"></i>
+                确  定
+            </a>
+            <span> &nbsp; </span>
+            <button id="btn_cancel" class="btn" type="button">
+                <i class="icon-undo bigger-110"></i>
+                取  消
+            </button>
+        </div>
+    </div>
+
+}
+@section scripts{
+    <script src="~/Content/plugin/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="~/Content/plugin/kendo/js/angular.min.js"></script>
+    <script src="~/Content/plugin/kendo/js/kendo.all.min.js"></script>
+    <script src="~/Content/plugin/kendo/content/shared/js/console.js"></script>
+    <script src="~/Content/plugin/Validform_v5.3.2.js"></script>
+    <script src="~/Content/plugin/layui/build/layui.js"></script>
+    <script src="~/Content/plugin/icheck-1.x/icheck.min.js"></script>
+    <script src="~/Content/plugin/jquery.validate/jquery.validate.min.js"></script>
+    @System.Web.Optimization.Scripts.Render("~/formvalid/js")
+    <script type="text/javascript">
+        var statecodes = [{ id: 0, name: "启用" }, { id: 1, name: "停用" }];
+
+        $("#gridSelect1").kendoGrid({
+            dataSource: JSON.parse($("#hid_Dictionary").val()),
+            pageable: false,
+            editable: "inline",
+            toolbar: [
+                  {
+                      field: "StateCode",
+                      name: "create",
+                      text: "新增选项"
+                  }
+            ],
+            columns: [
+                { field: "Name", title: "标签", width: "110px", validation: { required: true } },
+                { field: "Value", title: "值", width: "70px", type: "number", validation: { required: true, min: 0 } },
+                { field: "Sort", title: "排序", width: "50px", type: "number", validation: { required: true, min: 0 } },
+                { field: "StateCode", hidden: true, validation: { required: true } },
+                {
+                    field: "StateCode", title: "状态", width: "100px", validation: { required: true, min: 0 },
+                    template: function (data) {
+                        return getName(data.StateCode || 0);
+                    },
+                    editor: function (container) {
+                        var input = $('<input id="StateCode" name="StateCode">');
+                        input.appendTo(container);
+                        input.kendoDropDownList({
+                            dataTextField: "name",
+                            dataValueField: "id",
+                            dataSource: statecodes
+                        }).appendTo(container);
+                    }
+                },
+                { width: "100px", command: [{ name: "destroy", text: "删除" }], title: "操作" }],
+            editable: {
+                // 设置删除时显示的确认信息
+                confirmation: "您确定要进行删除操作吗？建议删除前做好备份",
+                createAt: "bottom",// 添加位置，默认是top：从第一行进行添加
+                destroy: true,// 不允许删除
+                // 设mode: "inline",置编辑形式为弹出框(popup)还是在列表中(inline)
+                //                    template: kendo.template($("#editTemplate").html())//设置弹出框中加载的内容,设置此项mode必须是popup
+            }
+        });
+        function getName(id) {
+            for (var i = 0; i < statecodes.length; i++) {
+                if (statecodes[i].id == id) {
+                    if (id == 1) {
+                        return "<span style='color:red;'>" + statecodes[i].name + "</span>";
+                    } else {
+                        return "<span style='color:green'>" + statecodes[i].name + "</span>";
+                    }
+                } else {
+                    return "<span style='color:red'>" + statecodes[1].name + "</span>";
+                }
+            }
+        }
+
+    </script>
+    <script type="text/javascript">
+
+        $(function () {
+            formvalid.fn_beforeSendArr.push(function () {
+                var dic = [];
+                var valid = true;
+                var errmessge = "";
+                $("#gridSelect1").find("tbody").find("tr").each(function (n) {
+                    var tds = $(this).find("td")
+                    var Name = $(tds[0]).text();
+                    var Value = $(tds[1]).text();
+                    var Sort = $(tds[2]).text();
+                    var StateCode = isNaN($(tds[3]).text()) ? 1 : $(tds[3]).text() == "" ? 0 : $(tds[3]).text();
+                    if (Name == "") { errmessge = "选项标签不能为空！"; return false; }
+                    if (Value == "") { errmessge = "选项值不能为空！"; return false; }
+                    if (Sort == "") { errmessge = "选项排序不能为空！"; return false; }
+                    $.each(dic, function (m, n) {
+                        if (n.Value == Value) {
+                            errmessge = "选项值不能相同！"; return false;
+                        }
+                        if (n.Name == Name) {
+                            errmessge = "选项标签不能相同！"; return false;
+                        }
+                    })
+                    dic.push({
+                        Name: Name,
+                        Value: Value,
+                        Sort: Sort,
+                        StateCode: StateCode,
+                    });
+                })
+                if (errmessge != "") { dlg.msg.info(errmessge); return false; }
+                $("#hid_Dictionary").val(JSON.stringify(dic))
+            });
+            formvalid.fn_afterSubmitArr.push(function (data) {
+                if (data.Success) {
+                    dlg.msg.info("编辑成功");
+                    parent.grid.refresh();
+                    setTimeout(function () { parent.layer.close(formvalid.layer.index); }, 1000);
+                }
+            });
+            formvalid.init({});
+        });
+    </script>
+}

@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "AttachmentUpload";
+    Layout = null;
+}
+<link href="~/Content/plugin/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+<link href="~/Content/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/plugin/bootstrap-fileinput/prod/all-krajee.css" rel="stylesheet" />
+<script src="~/Content/plugin/jQuery/jquery-2.2.3.min.js"></script>
+<script src="~/Content/plugin/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/Content/plugin/bootstrap-fileinput/js/fileinput.js"></script>
+<script src="~/Content/plugin/bootstrap-fileinput/js/fileinput_locale_zh.js"></script>
+<div style="width:400px;">
+    <label class="control-label">Select File</label>
+    <input id="input-1a" type="file" class="file" data-show-preview="false">
+</div>
+@*<h2>AttachmentUpload</h2>
+    <input name="contractFile" multiple class="projectfile" data-value="" type="file"><br />
+    <script type="text/javascript">
+        projectfileoptions = {
+            uploadUrl: "/file-upload-batch/2",
+            showUpload: false,
+            showRemove: false,
+            showCaption: false,
+            dropZoneEnabled: false,
+            language: 'zh',
+            //allowedPreviewTypes: ['image'],
+            //allowedFileExtensions: ['jpg', 'png', 'gif', "pdf"],
+            maxFileSize: 9000,
+            initialPreview: [],
+            initialPreviewConfig: []
+        };
+        // 文件上传框
+        $('input[class=projectfile]').each(function () {
+            var ContractFile = $(this).data("value");
+            if (ContractFile) {
+                $.each(ContractFile, function (m, n) {
+                    var _url = n.Url;
+                    if (_url.indexOf("jpg") != -1 || _url.indexOf("png") != -1 || _url.indexOf("gif") != -1) {
+                        projectfileoptions.initialPreview.push(_url);
+                        projectfileoptions.initialPreviewConfig.push({ url: "/Contract/DeletecContractFile", key: n.Id });
+                    }
+                    if (_url.indexOf("pdf") != -1) {
+                        projectfileoptions.initialPreview.push(_url);
+                        projectfileoptions.initialPreviewConfig.push({ type: "pdf", url: "/Contract/DeletecContractFile", key: n.Id });
+                    }
+                });
+                var op = $.extend({
+                    overwriteInitial: false,
+                    initialPreviewAsData: true, // defaults markup
+                    uploadExtraData: {
+                        img_key: "1000",
+                        img_keywords: "happy, nature",
+                    }
+                }, projectfileoptions);
+
+                $(this).fileinput(op);
+            } else {
+                $(this).fileinput(projectfileoptions);
+            }
+        });
+    </script>*@

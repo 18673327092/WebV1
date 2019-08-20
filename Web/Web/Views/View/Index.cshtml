@@ -1,0 +1,65 @@
+﻿@using CRM.Model
+@using CRM.Model.Sys
+@{
+    Layout = "~/Views/Shared/_LayoutWindow.cshtml";
+    Sys_View data = ViewBag.View as Sys_View;
+}
+@section css{
+    @Html.Partial("_Layout-list-css")
+    @System.Web.Optimization.Styles.Render("~/view/css")
+}
+@section toolbar{
+    @{
+        if (string.IsNullOrEmpty(ViewBag.ViewTyp) || ViewBag.ViewType == "自定义视图" || Convert.ToInt32(ViewBag.UserID) == 999)
+        {
+            <a id="btn-view-save" href="javascript://" onclick="view.save()" class="btn btn-toolbar" style="color: #2E2E2E;"><i class="fa fa-save"></i>保存</a>
+            <a id="btn-view-editcolumns" href="javascript://" onclick="view.editcolumns()" class="btn btn-toolbar" style="color: #2E2E2E;"><i class="fa icon-edit"></i>编辑列</a>
+        }
+    }
+    <a id="btn-view-saveto" href="javascript://" onclick="view.saveto()" class="btn btn-toolbar" style="color: #2E2E2E;"><i class="fa fa-clipboard"></i>另存为</a>
+    <a id="btn-view-delete" href="javascript://" onclick="view.deleteview()" class="btn btn-toolbar" style="color: #2E2E2E;"><i class="fa icon-edit"></i>删除选中的视图</a>
+    <a id="btn-view-close" href="javascript://" class="btn btn-toolbar" style="color: #2E2E2E;"><i class="fa icon-remove"></i>关闭</a>
+}
+<input type="hidden" id="entity" value="@ViewBag.Entity" />
+<input type="hidden" id="viewid" value="@ViewBag.ViewId" />
+<input type="hidden" id="viewname" value="@ViewBag.ViewName" />
+<input type="hidden" id="viewremark" value="@ViewBag.ViewRemark" />
+<input type="hidden" id="viewismenu" value="@ViewBag.IsMenu" />
+<input type="hidden" id="isimporttemplate" value="@ViewBag.IsImportTemplate" />
+<input type="hidden" id="viewtype" value="@ViewBag.ViewType" />
+<input type="hidden" id="viewsort" value="@ViewBag.ViewSort" />
+<input type="hidden" id="entityid" value="@ViewBag.EntityId" />
+<input type="hidden" id="entityname" value="@ViewBag.EntityName" />
+<input type="hidden" id="areaname" value="@ViewBag.AreaName" />
+<input type="hidden" id="controllername" value="@ViewBag.ControllerName" />
+<input type="hidden" id="fieldlist" value="@ViewBag.FieldList" />
+<input type="hidden" id="viewfieldlist" value="@ViewBag.ViewFieldList" />
+<input type="hidden" id="fkentitylist" value="@ViewBag.FKEntityList" />
+<input type="hidden" id="express" value="@ViewBag.Express" />
+<input type="hidden" id="userid" value="@ViewBag.UserID" />
+<input type="hidden" id="key" />
+@section scripts{
+    <script src="~/Content/plugin/layui/build/layui.js"></script>
+    @System.Web.Optimization.Scripts.Render("~/view/js")
+}
+
+<div class="layui-tab" >
+    <ul class="layui-tab-title">
+        <li class="layui-this">筛选组</li>
+        <li onclick="view.preview()">查看结果</li>
+        <li onclick="view.loadviewlist()">已保存的视图</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+           
+                <div class="col-xs-12">
+                    <div id="query">
+                    </div>
+                </div>
+        </div>
+        <div class="layui-tab-item">
+            <div id="previewgrid"></div>
+        </div>
+        <div class="layui-tab-item"><div id="grid"></div></div>
+    </div>
+</div>

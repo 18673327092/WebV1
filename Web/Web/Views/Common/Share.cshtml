@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="keywords" content="CRM" />
+    <meta name="description" content="CRM" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 基本样式 -->
+    <link rel="stylesheet" href="/Content/plugin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/Content/plugin/assets/css/ace-skins.min.css" />
+    <link href="/Content/plugin/kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/plugin/kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
+    @System.Web.Optimization.Styles.Render("~/share/css")
+</head>
+<body style=" margin: 1px 10px 10px 10px;">
+    <div style="width: 100%; height: 374px; overflow-y: auto; margin-bottom: 0px">
+        <input type="hidden" id="hid_selectvalueId" value="@ViewBag.Value" />
+        <span class="input-icon" style="margin-bottom: 10px;margin-top:10px; width:100%">
+            <input class="form-tag filed form-field form-control text-box single-line" id="KeyWord" style="height: 29px; padding: 2px 6px; " type="text" placeholder="输入关键字搜索" />
+            <i id="btn-search" class="icon-search nav-search-icon" style="cursor: pointer; top: 1px;"></i>
+        </span>
+        <div id="dicgrid" style="height:230px"></div>
+        <table border="0" style=" width: 100%;">
+            <tr>
+                <td style=" width: 100px; background-color: white; padding-right: 11px; padding-top: 13px; ">
+                    <input id="btn-select" type="button" value="选择" style="width: 100%; margin-bottom: 6px; background-color: white; border: solid 1px #ccc !important; margin-right: 22px; padding-right: 10px; " />
+                    <br />
+                    <input id="btn-delete" type="button" value="移除" style="width: 100%; background-color: white; border: solid 1px #ccc !important; margin-right: 22px; padding-right: 10px; " />
+                </td>
+                <td style=" width: 100%;">
+                    <div id="select_value" style=" width: 100%;height: 66px; overflow-y: scroll; border: solid 1px #ccc; margin-top: 13px; padding: 1px 5px;">
+                        @{
+                            if (ViewBag.ShareUser != null)
+                            {
+                                var ShareUser = ViewBag.ShareUser as List<CRM.Model.Sys.Sys_User>;
+                                foreach (var item in ShareUser)
+                                {
+                                    <span class="select_span" data-name="@item.Name" data-id="@item.ID"><span class="title"><i class="fa icon-ok-circle"></i>@item.Name</span><input type="hidden" class="value" value="@item.ID"></span>
+                                }
+                            }
+                        }
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="layui-layer-btn layui-layer-btn-" style="padding-bottom: 0px;">
+        <a id="btn-save" class="layui-layer-btn0">确定</a>
+        <a id="btn-cancel" class="layui-layer-btn1">取消</a>
+        <a id="btn-remove" class="layui-layer-btn1" style="display:none;">移除</a>
+    </div>
+    <script src="/Content/plugin/jquery/jquery-2.2.3.min.js"></script>
+    <script src="~/Content/plugin/icheck-1.x/icheck.min.js"></script>
+    <script src="~/Content/plugin/layer/layer.js"></script>
+    @System.Web.Optimization.Scripts.Render("~/share/js")
+    <script type="text/javascript">
+        $(function () {
+            share.init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+﻿.gridly {
+    position: relative;
+    width: 1200px;
+}
+
+    .gridly .thumbnail {
+        width: 100px;
+        height: 100px;
+        display: table-cell;
+        text-align: center;
+        border: solid 1px #ccc;
+    }
+
+.gridlytoobar {
+    position: absolute;
+    cursor: pointer;
+    top: 0px;
+    color: white;
+    height: 25px;
+    width: 110px;
+    margin-left: 5px;
+    background-color: rgba(33, 11, 13, 0.55);
+    z-index: 10;
+    right: -10px;
+    display: none;
+}
+
+
+    .gridlytoobar a {
+        color: white;
+        float: right;
+        margin-right: 7px;
+    }
+
+.thumbnail {
+    display: inline-block;
+    display: block;
+    height: auto;
+    max-width: 100%;
+    padding: 4px;
+    line-height: 1.428571429;
+    /* background-color: #fff; */
+    /* border: 1px solid #ddd; */
+    /* border-radius: 4px; */
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+.brick.small {
+    width: 100px;
+    height: 100px;
+}
+
+.uploadifyQueue {
+    display: none;
+}
+
+.gridly {
+    position: relative;
+    width: auto;
+}
+
+
+
+.brick.large {
+    width: 100px;
+    height: 100px;
+}
+
+.thumbnail {
+    margin-right: 1px;
+}

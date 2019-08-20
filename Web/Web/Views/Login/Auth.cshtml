@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "站点授权";
+    Layout = "~/Views/Shared/_LayoutWindow.cshtml";
+}
+
+
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+        <div class="col-sm-9">
+            <h1 style=" font-size: 25px;">未授权或授权到期，请提供正确的KEY</h1>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">站点编码</label>
+        <div class="col-sm-9">
+            <input placeholder="" readonly="readonly" value="@CRM.Core.SysHelper.SiteKey" style="background-color: white !important; padding-left: 0px; font-size: 25px; color: #4398EE; height: 34px; border: solid 0px;" class="col-xs-10 col-sm-5" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-input-readonly">请输入授权KEY</label>
+        <div class="col-sm-9">
+            <input id="value" placeholder="请输入授权KEY" style=" height: 34px;" class="col-xs-10 col-sm-5">
+        </div>
+    </div>
+    <div class="space-4"></div>
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-3 col-md-9">
+            <button id="btn_submit" class="btn btn-info" type="button">
+                <i class="icon-ok bigger-110"></i>
+                确 定
+            </button>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#btn_submit").click(function () {
+                var data = {
+                    value: $("#value").val().trim(),
+                };
+                if (data.value == "") { layer.msg("授权Key不能为空"); $("#value").focus(); return false; }
+                $.post("/Login/AuthSubmit", data, function (data) {
+                    if (data.Success) {
+                        layer.alert("提交成功，请重新登录");
+                        setTimeout(function () {
+                            parent.location.href = "/Login/Index";
+                        }, 1500);
+                    } else {
+                        layer.alert(data.Message);
+                    }
+                }, "json");
+            });
+        });
+
+        function Return() {
+            history.go(-1);
+        }
+    </script>
+}
