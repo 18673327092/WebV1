@@ -48,15 +48,16 @@ namespace Base.Service
                 {
                     Name = "administrator",
                     ID = 999,
+                    SiteID=1000
                 };
                 return result;
             }
 
-            var valid = db.ExecuteScalar<int>("SELECT COUNT(0) FROM Sys_User WHERE LoginAccount=@0 AND LoginPassword=@1", entity.LoginAccount, entity.LoginPassword);
+            var valid = db.ExecuteScalar<int>("SELECT COUNT(0) FROM Sys_User WHERE LoginAccount=@0 AND LoginPassword=@1", entity.LoginAccount, EncryptHelper.Single.Md5(entity.LoginPassword));
             if (valid > 0)
             {
-                Sys_User user = db.FirstOrDefault<Sys_User>("SELECT * FROM Sys_User WHERE LoginAccount=@0 AND LoginPassword=@1", entity.LoginAccount, entity.LoginPassword);
-                if (user.StateCode != 0)
+                Sys_User user = db.FirstOrDefault<Sys_User>("SELECT * FROM Sys_User WHERE LoginAccount=@0 AND LoginPassword=@1", entity.LoginAccount, EncryptHelper.Single.Md5(entity.LoginPassword));
+                if (user.StateCode != 1)
                 {
                     result.Success = false;
                     result.Message = "登录失败，您的帐号已停用，请联系管理员";
@@ -102,6 +103,12 @@ namespace Base.Service
                 _credential.Name = user.Name;
                 _credential.DepartmentID = user.ForDepartment;
                 _credential.LoginAccount = user.LoginAccount;
+                _credential.SiteID = user.SiteID;
+                _credential.AccountType = user.AccountType;
+                if (user.SiteID > 0)
+                {
+                    _credential.SiteHomePageLink = db.ExecuteScalar<string>("SELECT Remark FROM Sys_Site WHERE ID=@0", user.SiteID);
+                }
 
                 //获取角色信息
                 List<int> rolelist = new List<int>();

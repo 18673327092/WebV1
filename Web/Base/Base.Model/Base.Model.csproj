@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
+    <Compile Include="Base\Base_Advertisement.cs" />
     <Compile Include="Base\Base_Approval.cs" />
     <Compile Include="Base\Base_ApprovalDetail.cs" />
     <Compile Include="Base\Base_Attachment.cs" />
@@ -63,14 +64,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enum\FieldEnum.cs" />
     <Compile Include="Enum\ViewTypeEnum.cs" />
-    <Compile Include="Sys\Model\AdminCredential.cs" />
     <Compile Include="Sys\Model\DataConfigModel.cs" />
     <Compile Include="Sys\Model\DictionaryModel.cs" />
     <Compile Include="Sys\Model\FormFieldModel.cs" />
     <Compile Include="Sys\Model\FormSectionModel.cs" />
     <Compile Include="Sys\Model\JoinEntity.cs" />
     <Compile Include="Sys\Model\LoginModelRequest.cs" />
-    <Compile Include="Sys\Model\LoginUserResponse.cs" />
+    <Compile Include="Sys\Model\AdminCredential.cs" />
     <Compile Include="Sys\Model\PageConfigModel.cs" />
     <Compile Include="Sys\Model\RelationEntity.cs" />
     <Compile Include="Sys\Model\RelationEntityFiled.cs" />

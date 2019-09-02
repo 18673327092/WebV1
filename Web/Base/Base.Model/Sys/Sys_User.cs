@@ -34,6 +34,12 @@ namespace Base.Model
         public string Mobile { get; set; }
 
         /// <summary>
+        /// 备注
+        /// </summary>
+        [DataMember]
+        public string Remark { get; set; }
+
+        /// <summary>
         /// 所属岗位
         /// </summary>
         [DataMember]
@@ -68,5 +74,11 @@ namespace Base.Model
         /// </summary>
         [DataMember]
         public int AccountType { get; set; }
+
+        /// <summary>
+        /// 登录站点
+        /// </summary>
+        [DataMember]
+        public int SiteID { get; set; }
     }
 }

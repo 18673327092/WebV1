@@ -57,6 +57,7 @@
                 width: 100%;
                 padding: 0 5px;
             }
+
             .form_content select {
                 height: 36px;
                 width: 200px;
@@ -74,7 +75,7 @@
                 WIDTH: 25px;
                 height: 25px;
                 position: absolute;
-                right: 2px;
+                left: 170px;
                 top: 35px;
             }
 
@@ -172,70 +173,70 @@
                     </ul>
                 }
 
-                    <div class="@(IsTab ? "layui-tab-content" : "")">
-                        @{
-                            int line = 0;
-                            foreach (var s in form.FormShowFieldsDB)
+                <div class="@(IsTab ? "layui-tab-content" : "")">
+                    @{
+                        int line = 0;
+                        foreach (var s in form.FormShowFieldsDB)
+                        {
+                            if (!string.IsNullOrEmpty(s.Name) && !IsTab)
                             {
-                                if (!string.IsNullOrEmpty(s.Name) && !IsTab)
-                                {
-                                    <div class="formTitle" id="@s.Name">@s.Name</div>
-                     
-                                }
-                                <div class="@(IsTab ? "layui-tab-item" : "")  @(line++ == 0&&IsTab ? "layui-show" : "")">
+                                <div class="formTitle" id="@s.Name">@s.Name</div>
 
-                                    <table data-name="@s.Name" width="100%" border="0" cellspacing="0" cellpadding="8">
-                                        @{
-                                            var trs = s.Fields.Count / s.Colspan;
-                                            for (int tr = 1; tr <= trs; tr++)
-                                            {
-                                        <tr>
-                                            @{
-                                                for (int td = 1; td <= s.Colspan; td++)
-                                                {
-                                                    var field = s.Fields.Where(e => e.X == td && e.Y == tr).FirstOrDefault();
-                                                    if (field != null && field.FieldID > 0)
+                            }
+                            <div class="@(IsTab ? "layui-tab-item" : "")  @(line++ == 0&&IsTab ? "layui-show" : "")">
+
+                                <table data-name="@s.Name" width="100%" border="0" cellspacing="0" cellpadding="8">
+                                    @{
+                                        var trs = s.Fields.Count / s.Colspan;
+                                        for (int tr = 1; tr <= trs; tr++)
+                                        {
+                                            <tr>
+                                                @{
+                                                    for (int td = 1; td <= s.Colspan; td++)
                                                     {
-                                                        if (field.IsCustomizeControl.HasValue && field.IsCustomizeControl.Value)
+                                                        var field = s.Fields.Where(e => e.X == td && e.Y == tr).FirstOrDefault();
+                                                        if (field != null && field.FieldID > 0)
                                                         {
-                                                            @RenderSection(field.FieldName, false)
+                                                            if (field.IsCustomizeControl.HasValue && field.IsCustomizeControl.Value)
+                                                            {
+                                                                @RenderSection(field.FieldName, false)
+                                                            }
+                                                            else
+                                                            {
+                                                                <td width="100" align="right" style="">
+                                                                    <span class="form_label">
+                                                                        @field.Title
+                                                                        @if (field.IsMust.HasValue && field.IsMust.Value)
+                                                                        {
+                                                                            <span style="color:red;">*</span>
+                                                                        }
+                                                                    </span>
+                                                                </td>
+                                                                <td width="" style=" border: 0px;padding: 0px;">
+                                                                    <div class="form_content">
+                                                                        @Html.FormControl(new FormControllerModel() { FieldID = field.FieldID, FormField = field, ID = ID, ClassName = "" })
+                                                                        @if (!string.IsNullOrEmpty(field.Remark))
+                                                                        {
+                                                                            <span style="color: gray; padding: 0px 5px; margin-top: 3px; display: inline-block;">@field.Remark</span>
+                                                                        }
+                                                                    </div>
+
+                                                                </td>
+                                                            }
                                                         }
                                                         else
                                                         {
-                                                            <td width="100" align="right" style="">
-                                                                <span class="form_label">
-                                                                    @field.Title
-                                                                    @if (field.IsMust.HasValue && field.IsMust.Value)
-                                                                    {
-                                                                        <span style="color:red;">*</span>
-                                                                    }
-                                                                </span>
-                                                            </td>
-                                                            <td width="" style=" border: 0px;padding: 0px;">
-                                                                <div class="form_content">
-                                                                    @Html.FormControl(new FormControllerModel() { FieldID = field.FieldID, FormField = field, ID = ID, ClassName = "" })
-                                                                    @if (!string.IsNullOrEmpty(field.Remark))
-                                                                    {
-                                                                        <span style="color: gray; padding: 0px 5px; margin-top: 3px; display: inline-block;">@field.Remark</span>
-                                                                    }
-                                                                </div>
-                                                                
-                                                            </td>
                                                         }
                                                     }
-                                                    else
-                                                    {
-                                                    }
                                                 }
-                                            }
-                                        </tr>
-                                            }
+                                            </tr>
                                         }
-                                    </table>
-                                </div>
-                            }
+                                    }
+                                </table>
+                            </div>
                         }
-                    </div>
+                    }
+                </div>
             }
             @RenderBody()
         </div>

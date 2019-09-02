@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AccessRightSetting\IDataConfigService.cs" />
     <Compile Include="AccessRightSetting\IOperationConfigService.cs" />
+    <Compile Include="Advertisement\IAdvertisementService.cs" />
     <Compile Include="Approval\IApprovalDetailService.cs" />
     <Compile Include="Approval\IApprovalService.cs" />
     <Compile Include="Attachment\IAttachmentService.cs" />

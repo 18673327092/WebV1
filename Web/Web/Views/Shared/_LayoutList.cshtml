@@ -200,7 +200,7 @@
                         style: "text-align: center;"
                     },
                     template: function (data) {
-                        if (data["@(ViewBag.EntityName)$OwnerID"] == "999" &&'@ViewBag.UserID'== "999") { return ""; } else {
+                        if (data["@(ViewBag.EntityName)$OwnerID"] == "999" &&'@ViewBag.UserID'!= "999") { return ""; } else {
                                var _list = [];
                         $.each(operations, function (m, n) {
                             _list.push('<a id="0" class="' + (n.Style == "" ? "" : n.Style) + '" title="' + n.OperateName + '" onclick="' + n.Fun + '(' + data["@(ViewBag.EntityName)$ID"] + ',\'' + data["@(ViewBag.EntityName)$Name"] + '\',' +@ViewBag.ViewID+',' + data["peta_rn"] + ')">' + n.OperateName + '</a>');

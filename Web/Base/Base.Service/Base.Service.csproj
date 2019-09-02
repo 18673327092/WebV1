@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="AccessRightSetting\DataConfigService.cs" />
     <Compile Include="AccessRightSetting\OperationConfigService.cs" />
+    <Compile Include="Advertisement\AdvertisementService.cs" />
     <Compile Include="Approval\ApprovalDetailService.cs" />
     <Compile Include="Approval\ApprovalService.cs" />
     <Compile Include="Attachment\AttachmentService.cs" />
